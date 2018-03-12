@@ -7,4 +7,11 @@
   </parent>
   <artifactId>bos_management_dao</artifactId>
   <description>管理后台的DAO</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.itheima</groupId>
+  		<artifactId>bos_management_domain</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>
