@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!--  vue.js -->
+<link rel="stylesheet" type="text/css"
+	href="../js/easyui/themes/default/easyui.css">
+
+<link rel="stylesheet" type="text/css"
+	href="../js/easyui/themes/icon.css">
+<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script>
+
+
+</head>
+<body>
+	<!-- EasyUI控件很多都可以发起网络请求,请求方式是AJAX -->
+	<table class="easyui-datagrid" data-options="url:'dg.json'">
+		<thead>
+			<tr>
+				<th data-options="field:'id'">编号</th>
+				<th data-options="field:'name'">名字</th>
+				<th data-options="field:'age'">年龄</th>
+
+			</tr>
+		</thead>
+		<tbody>
+
+
+
+		</tbody>
+		<tfoot></tfoot>
+	</table>
+</body>
+</html>
