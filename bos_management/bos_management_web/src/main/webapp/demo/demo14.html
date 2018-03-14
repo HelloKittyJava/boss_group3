@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!--  vue.js -->
+<link rel="stylesheet" type="text/css"
+	href="../js/easyui/themes/default/easyui.css">
+
+<link rel="stylesheet" type="text/css"
+	href="../js/easyui/themes/icon.css">
+<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script>
+
+<script type="text/javascript">
+	
+</script>
+</head>
+<body>
+	<select class="easyui-combobox">
+		<option value="001">上海</option>
+		<option value="002">北京</option>
+		<option value="003">深圳</option>
+
+	</select>
+
+	<hr>
+	
+	<!-- 
+	
+	valueField : 加载的json文件中对象的key,传递给服务器的值就包含在这个key对应的值里面
+	textField : 加载的json文件中对象的key,这个key对应的值是显示在页面上给用户看的
+	 -->
+	
+	<input id="cc" class="easyui-combobox"
+		data-options="valueField:'id',textField:'name',url:'cb.json'" />
+
+
+</body>
+</html>
