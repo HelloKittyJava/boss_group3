@@ -22,11 +22,13 @@ public class StandardServiceImpl implements StandardService {
     @Autowired
     private StandardRepository standardRepository;
 
+    // 保存
     @Override
     public void save(Standard standard) {
         standardRepository.save(standard);
     }
 
+    // 分页查询
     @Override
     public Page<Standard> findAll(Pageable pageable) {
 
