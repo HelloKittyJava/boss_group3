@@ -96,4 +96,20 @@ public class CourierAction extends ActionSupport
         return NONE;
     }
 
+    // 使用属性驱动获取要删除的快递员的Id
+    private String ids;
+
+    public void setIds(String ids) {
+        this.ids = ids;
+    }
+
+    // 批量删除
+    @Action(value = "courierAction_batchDel",
+            results = {@Result(name = "success",
+                    location = "/pages/base/courier.html", type = "redirect")})
+    public String batchDel() {
+        courierService.batchDel(ids);
+        return SUCCESS;
+    }
+
 }
