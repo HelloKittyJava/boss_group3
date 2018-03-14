@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -51,7 +52,9 @@ public class Courier {
     @ManyToOne
     @JoinColumn(name = "C_TAKETIME_ID")
     private TakeTime takeTime;
-
+    // 只有集合属性会发生懒加载
+    // 增加transient 关键字
+    // 增加fetch=FetchType.EAGER 属性
     @ManyToMany(mappedBy = "couriers")
     private Set<FixedArea> fixedAreas = new HashSet<FixedArea>();
 
