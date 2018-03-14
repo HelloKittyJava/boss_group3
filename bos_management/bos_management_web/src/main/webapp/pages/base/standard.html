@@ -64,8 +64,8 @@
 				// 勾选一条数据的时候,才可以进行修改
 				// 打开窗口
 				$("#standardWindow").window("open")
-				console.log(result[0])
-				$("#standardForm").form("load",result[0])
+				//回填数据到form表单
+				$("#standardForm").form("load", result[0])
 			} else {
 				$.messager.alert("提示", "您必须也只能选择一条数据进行修改", "info")
 			}
