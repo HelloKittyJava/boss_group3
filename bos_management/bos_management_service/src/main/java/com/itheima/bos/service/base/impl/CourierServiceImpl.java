@@ -31,10 +31,9 @@ public class CourierServiceImpl implements CourierService {
         courierRepository.save(courier);
     }
 
-    // 查询
+    // 无条件的分页查询
     @Override
     public Page<Courier> findAll(Pageable pageable) {
-       
         return courierRepository.findAll(pageable);
     }
 
@@ -54,10 +53,10 @@ public class CourierServiceImpl implements CourierService {
 
     }
 
+    // 带有条件的分页查询
     @Override
     public Page<Courier> findAll(Specification<Courier> specification,
             Pageable pageable) {
-          
         return courierRepository.findAll(specification, pageable);
     }
 }

@@ -96,7 +96,7 @@ public class CourierAction extends ActionSupport
                 String company = model.getCompany();
                 String type = model.getType();
                 Standard standard = model.getStandard();
-
+                // 存储条件的集合
                 List<Predicate> list = new ArrayList<>();
                 if (StringUtils.isNotEmpty(courierNum)) {
                     // 如果工号不为空,构建一个等值查询条件
@@ -140,6 +140,7 @@ public class CourierAction extends ActionSupport
                 }
 
                 // 用户输入了查询条件
+                // 将多个条件进行组合
                 Predicate[] arr = new Predicate[list.size()];
                 list.toArray(arr);
                 // 用户输入了多少个条件,就让多少个条件同时都满足

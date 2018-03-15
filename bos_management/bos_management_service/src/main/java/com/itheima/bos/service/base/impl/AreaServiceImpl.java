@@ -24,15 +24,15 @@ public class AreaServiceImpl implements AreaService {
     @Autowired
     private AreaRepository areaRepository;
 
+    // 批量保存
     @Override
     public void save(List<Area> list) {
-
         areaRepository.save(list);
     }
 
+    // 分页查询
     @Override
     public Page<Area> findAll(Pageable pageable) {
-          
         return areaRepository.findAll(pageable);
     }
 
