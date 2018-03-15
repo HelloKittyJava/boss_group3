@@ -2,25 +2,38 @@ package com.itheima.bos.web.action.base;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
 import com.itheima.bos.domain.base.Area;
+import com.itheima.bos.domain.base.Standard;
 import com.itheima.bos.service.base.AreaService;
 import com.itheima.utils.PinYin4jUtils;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
 /**
  * ClassName:AreaServiceAction <br/>
@@ -103,6 +116,52 @@ public class AreaAction extends ActionSupport implements ModelDriven<Area> {
         }
 
         return SUCCESS;
+    }
+
+    // 使用属性驱动获取数据
+    private int page;// 第几页
+    private int rows;// 每一页显示多少条数据
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    // AJAX请求不需要跳转页面
+    @Action(value = "areaAction_pageQuery")
+    public String pageQuery() throws IOException {
+
+        // EasyUI的页码是从1开始的
+        // SPringDataJPA的页码是从0开始的
+        // 所以要-1
+
+        Pageable pageable = new PageRequest(page - 1, rows);
+
+        Page<Area> page = areaService.findAll(pageable);
+
+        // 总数据条数
+        long total = page.getTotalElements();
+        // 当前页要实现的内容
+        List<Area> list = page.getContent();
+        // 封装数据
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("total", total);
+        map.put("rows", list);
+
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[] {"subareas"});
+
+        String json = JSONObject.fromObject(map, jsonConfig).toString();
+
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(json);
+
+        return NONE;
     }
 
 }
