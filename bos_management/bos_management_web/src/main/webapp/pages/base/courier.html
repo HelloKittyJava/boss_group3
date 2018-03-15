@@ -37,7 +37,8 @@
 		if (rows.length == 0) {
 			$.messager.alert("提示", "你至少要选择一条数据进行操作", "info")
 		} else {
-			$.messager.confirm(
+			$.messager
+					.confirm(
 							'删除对话框',
 							'您确定要作废这些快递员吗？',
 							function(r) {
@@ -63,6 +64,10 @@
 	function doRestore() {
 		alert("将取派员还原...");
 	}
+	// 打开搜索窗口
+	function openSearchWindow() {
+		$("#searchWindow").window("open")
+	}
 	//工具栏
 	var toolbar = [ {
 		id : 'button-add',
@@ -84,6 +89,11 @@
 		text : '还原',
 		iconCls : 'icon-save',
 		handler : doRestore
+	}, {
+		id : 'button-search',
+		text : '搜索',
+		iconCls : 'icon-search',
+		handler : openSearchWindow
 	} ];
 	// 定义列
 	var columns = [ [ {
@@ -205,6 +215,36 @@
 			$("#courierForm").submit()
 		}
 	}
+
+	$.fn.serializeJson = function() {
+		var serializeObj = {};
+		var array = this.serializeArray();
+		var str = this.serialize();
+		$(array).each(
+				function() {
+					if (serializeObj[this.name]) {
+						if ($.isArray(serializeObj[this.name])) {
+							serializeObj[this.name].push(this.value);
+						} else {
+							serializeObj[this.name] = [
+									serializeObj[this.name], this.value ];
+						}
+					} else {
+						serializeObj[this.name] = this.value;
+					}
+				});
+		return serializeObj;
+	};
+
+	// 执行查询
+	function doSearch() {
+		// 让Datagrid重新发起请求,并把用户输入的查询条件传递给后台
+
+		var result = $("#searchForm").serializeJson();
+
+		$('#grid').datagrid('load', result);
+
+	}
 </script>
 </head>
 
@@ -307,8 +347,8 @@
 					</tr>
 					<tr>
 						<td colspan="2"><a id="searchBtn" href="#"
-							class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a>
-						</td>
+							onclick="doSearch()" class="easyui-linkbutton"
+							data-options="iconCls:'icon-search'">查询</a></td>
 					</tr>
 				</table>
 			</form>
