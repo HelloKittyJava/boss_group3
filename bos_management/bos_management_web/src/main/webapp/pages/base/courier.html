@@ -238,10 +238,9 @@
 
 	// 执行查询
 	function doSearch() {
-		// 让Datagrid重新发起请求,并把用户输入的查询条件传递给后台
-
+		// 把form表单中input节点的name的值和用户输入的内容,拼接成json字符串
 		var result = $("#searchForm").serializeJson();
-
+		// 让Datagrid重新发起请求,并把用户输入的查询条件传递给后台
 		$('#grid').datagrid('load', result);
 
 	}
@@ -320,7 +319,7 @@
 	</div>
 
 	<!-- 查询快递员-->
-	<div class="easyui-window" title="查询快递员窗口" closed="true"
+	<div class="easyui-window" title="查询快递员窗口" closed="true" modal="true"
 		id="searchWindow" collapsible="false" minimizable="false"
 		maximizable="false" style="width: 400px; top: 40px; left: 200px">
 		<div style="overflow: auto; padding: 5px;" border="false">

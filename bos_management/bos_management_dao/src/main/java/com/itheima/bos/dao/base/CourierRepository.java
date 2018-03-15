@@ -1,6 +1,7 @@
 package com.itheima.bos.dao.base;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
@@ -11,7 +12,10 @@ import com.itheima.bos.domain.base.Courier;
  * Function: <br/>
  * Date: 2018年3月14日 上午11:42:27 <br/>
  */
-public interface CourierRepository extends JpaRepository<Courier, Long> {
+// JpaSpecificationExecutor接口不能单独使用
+// JpaSpecificationExecutor接口一般都是和JpaRepository接口一起使用
+public interface CourierRepository extends JpaRepository<Courier, Long>,
+        JpaSpecificationExecutor<Courier> {
 
     // 根据ID更改删除的标志位
     @Modifying
