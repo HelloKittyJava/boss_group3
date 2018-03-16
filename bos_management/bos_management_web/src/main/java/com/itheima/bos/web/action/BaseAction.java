@@ -16,7 +16,7 @@ import com.opensymphony.xwork2.ModelDriven;
 public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 
     private T model;
-
+// 反射,内省,动态代理
     @Override
     public T getModel() {
         // 以public class AreaAction extends BaseAction<Area>代码为例
