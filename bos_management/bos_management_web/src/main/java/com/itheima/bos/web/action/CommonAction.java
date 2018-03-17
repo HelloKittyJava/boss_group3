@@ -29,15 +29,15 @@ public class CommonAction<T> extends ActionSupport implements ModelDriven<T> {
 
     public CommonAction(Class<T> clazz) {
         this.clazz = clazz;
-    }
-
-    @Override
-    public T getModel() {
         try {
             model = clazz.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public T getModel() {
 
         return model;
     }
