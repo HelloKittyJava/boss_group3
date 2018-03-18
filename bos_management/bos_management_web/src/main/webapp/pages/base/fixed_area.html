@@ -438,8 +438,8 @@
 
 
 						</select></td>
-						<td><input type="button" value="》》" id="toRight"> <br />
-							<input type="button" value="《《" id="toLeft"></td>
+						<td><input type="button" value="》》" id="toRight" onclick="moveCustomer2Right()"> <br />
+							<input type="button" value="《《" id="toLeft" onclick="moveCustomer2Left()"></td>
 						<td><select id="associationSelect" name="customerIds"
 							multiple="multiple" size="10"></select></td>
 					</tr>
@@ -452,6 +452,15 @@
 			</form>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+		function moveCustomer2Right() {
+			$("#associationSelect").append($("#noassociationSelect option:selected"))
+		}
+		function moveCustomer2Left() {
+			$("#noassociationSelect").append($("#associationSelect option:selected"))
+		}
+	</script>
 
 	<!-- 关联快递员窗口 -->
 	<div class="easyui-window" title="关联快递员窗口" id="courierWindow"
