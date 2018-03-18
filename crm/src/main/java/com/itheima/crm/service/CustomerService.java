@@ -22,4 +22,9 @@ public interface CustomerService {
     @GET
     @Path("/findAll")
     List<Customer> findAll();
+
+    // 查询未关联定区的客户
+    @GET
+    @Path("/findCustomersUnAssociated")
+    List<Customer> findCustomersUnAssociated();
 }

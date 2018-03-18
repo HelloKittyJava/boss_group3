@@ -41,6 +41,32 @@
 	function doAssociations() {
 		$('#customerWindow').window('open');
 	}
+	// 关联客户
+	function doCustomerAssociations() {
+		var rows = $("#grid").datagrid("getSelections")
+		if (rows.length == 1) {
+			//打开窗口
+			$('#customerWindow').window('open');
+			//清空节点中的数据
+			$("#noassociationSelect").empty();
+			//发起请求
+			$.post("../../fixedAreaAction_findUnAssociatedCustomers.action",
+					function(data) {
+						for (var i = 0; i < data.length; i++) {
+							var id=data[i].id;
+							var username=data[i].username;
+							var telephone=data[i].telephone;
+							
+							$("#noassociationSelect").append(
+									"<option value='"+id+"'>"+username+"["+telephone+"]</option>")
+						}
+
+					})
+		} else {
+			$.messager.alert("提示", "您最多也只能选择一条数据进行操作", "warning")
+		}
+
+	}
 
 	//工具栏
 	var toolbar = [ {
@@ -67,7 +93,7 @@
 		id : 'button-association',
 		text : '关联客户',
 		iconCls : 'icon-sum',
-		handler : doAssociations
+		handler : doCustomerAssociations
 	}, {
 		id : 'button-association-courier',
 		text : '关联快递员',
@@ -314,7 +340,7 @@
 					<tr class="title">
 						<td colspan="2">定区信息</td>
 					</tr>
-					
+
 					<tr>
 						<td>定区名称</td>
 						<td><input type="text" name="fixedAreaName"
@@ -389,8 +415,11 @@
 					</tr>
 					<tr>
 						<td><input type="hidden" name="id" id="customerFixedAreaId" />
-							<select id="noassociationSelect" multiple="multiple" size="10"></select>
-						</td>
+							<!-- size: 指定一次可以显示多少条数据  --> <!-- multiple: 可以选择多条数据--> <select
+							id="noassociationSelect" multiple="multiple" size="10">
+
+
+						</select></td>
 						<td><input type="button" value="》》" id="toRight"> <br />
 							<input type="button" value="《《" id="toLeft"></td>
 						<td><select id="associationSelect" name="customerIds"

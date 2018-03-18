@@ -28,4 +28,11 @@ public class CustomerServiceImpl implements CustomerService {
 
         return customerRepository.findAll();
     }
+
+    // 查询未关联定区的客户
+    @Override
+    public List<Customer> findCustomersUnAssociated() {
+
+        return customerRepository.findByFixedAreaIdIsNull();
+    }
 }
