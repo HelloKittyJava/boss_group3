@@ -82,13 +82,13 @@ public class FixedAreaAction extends CommonAction<FixedArea> {
         list2json(list, null);
         return NONE;
     }
-    
+
     // 向CRM系统发起请求,查询已关联指定定区的客户
     @Action(value = "fixedAreaAction_findAssociatedCustomers")
     public String findAssociatedCustomers() throws IOException {
 
         List<Customer> list = (List<Customer>) WebClient.create(
-                "http://localhost:8180/crm/webService/customerService/findCustomersUnAssociated")
+                "http://localhost:8180/crm/webService/customerService/findCustomersAssociated2FixedArea")
                 .query("fixedAreaId", getModel().getId())
                 .type(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -98,4 +98,26 @@ public class FixedAreaAction extends CommonAction<FixedArea> {
         return NONE;
     }
 
+    // 使用属性驱动获取要关联到指定定区的客户ID
+    private Long[] customerIds;
+
+    public void setCustomerIds(Long[] customerIds) {
+        this.customerIds = customerIds;
+    }
+
+    // 向CRM系统发起请求,关联客户
+    @Action(value = "fixedAreaAction_assignCustomers2FixedArea",
+            results = {@Result(name = "success",
+                    location = "/pages/base/fixed_area.html",
+                    type = "redirect")})
+    public String assignCustomers2FixedArea() throws IOException {
+        WebClient.create(
+                "http://localhost:8180/crm/webService/customerService/assignCustomers2FixedArea")
+                .query("fixedAreaId", getModel().getId())
+                .query("customerIds",customerIds)
+                .type(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .put(null);
+        return SUCCESS;
+    }
 }

@@ -4,6 +4,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,24 @@ public class CustomerServiceImpl implements CustomerService {
             String fixedAreaId) {
 
         return customerRepository.findByFixedAreaId(fixedAreaId);
+    }
+
+    @Override
+    public void assignCustomers2FixedArea(Long[] customerIds,
+            String fixedAreaId) {
+
+        // 根据定区ID,把关联到这个定区的所有客户全部解绑
+        if (StringUtils.isNotEmpty(fixedAreaId)) {
+            customerRepository.unbindCustomerByFixedArea(fixedAreaId);
+        }
+
+        // 要关联的数据和定区Id进行绑定
+        if (customerIds != null && fixedAreaId.length() > 0) {
+            for (Long customerId : customerIds) {
+                customerRepository.bindCustomer2FixedArea(customerId,
+                        fixedAreaId);
+            }
+        }
+
     }
 }
