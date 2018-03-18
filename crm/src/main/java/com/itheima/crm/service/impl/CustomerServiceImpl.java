@@ -35,4 +35,12 @@ public class CustomerServiceImpl implements CustomerService {
 
         return customerRepository.findByFixedAreaIdIsNull();
     }
+
+    // 查询已关联到指定定区的客户
+    @Override
+    public List<Customer> findCustomersAssociated2FixedArea(
+            String fixedAreaId) {
+
+        return customerRepository.findByFixedAreaId(fixedAreaId);
+    }
 }

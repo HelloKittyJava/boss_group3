@@ -82,5 +82,20 @@ public class FixedAreaAction extends CommonAction<FixedArea> {
         list2json(list, null);
         return NONE;
     }
+    
+    // 向CRM系统发起请求,查询已关联指定定区的客户
+    @Action(value = "fixedAreaAction_findAssociatedCustomers")
+    public String findAssociatedCustomers() throws IOException {
+
+        List<Customer> list = (List<Customer>) WebClient.create(
+                "http://localhost:8180/crm/webService/customerService/findCustomersUnAssociated")
+                .query("fixedAreaId", getModel().getId())
+                .type(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .getCollection(Customer.class);
+
+        list2json(list, null);
+        return NONE;
+    }
 
 }

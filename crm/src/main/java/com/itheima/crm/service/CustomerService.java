@@ -11,6 +11,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.itheima.crm.domain.Customer;
@@ -27,4 +28,10 @@ public interface CustomerService {
     @GET
     @Path("/findCustomersUnAssociated")
     List<Customer> findCustomersUnAssociated();
+
+    // 查询已关联到指定定区的客户
+    @GET
+    @Path("/findCustomersUnAssociated")
+    List<Customer> findCustomersAssociated2FixedArea(
+            @QueryParam("fixedAreaId") String fixedAreaId);
 }

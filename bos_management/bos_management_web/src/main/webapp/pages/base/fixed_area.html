@@ -49,18 +49,36 @@
 			$('#customerWindow').window('open');
 			//清空节点中的数据
 			$("#noassociationSelect").empty();
-			//发起请求
+			$("#associationSelect").empty();
+			//发起请求查询未关联的客户
 			$.post("../../fixedAreaAction_findUnAssociatedCustomers.action",
 					function(data) {
 						for (var i = 0; i < data.length; i++) {
-							var id=data[i].id;
-							var username=data[i].username;
-							var telephone=data[i].telephone;
-							
+							var id = data[i].id;
+							var username = data[i].username;
+							var telephone = data[i].telephone;
+
 							$("#noassociationSelect").append(
-									"<option value='"+id+"'>"+username+"["+telephone+"]</option>")
+									"<option value='"+id+"'>" + username + "["
+											+ telephone + "]</option>")
 						}
 
+					});
+
+			// 获取定区的ID
+			var id = rows[0].id;
+			//发起请求查询已关联到当前定区的客户
+			$.post("../../fixedAreaAction_findAssociatedCustomers.action",
+					"id=" + id, function(data) {
+						for (var i = 0; i < data.length; i++) {
+							var id = data[i].id;
+							var username = data[i].username;
+							var telephone = data[i].telephone;
+
+							$("#associationSelect").append(
+									"<option value='"+id+"'>" + username + "["
+											+ telephone + "]</option>")
+						}
 					})
 		} else {
 			$.messager.alert("提示", "您最多也只能选择一条数据进行操作", "warning")
