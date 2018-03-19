@@ -504,23 +504,33 @@
 					</tr>
 					<tr>
 						<td>选择收派时间</td>
-						<td><select required="true" class="easyui-combobox"
-							name="takeTimeId">
-								<option>请选择</option>
-								<option value="1">北京早班</option>
-								<option value="2">北京晚班</option>
-						</select> <!-- <input type="text" name="takeTimeId" class="easyui-combobox" required="true" /> -->
-						</td>
+						<td><input
+							data-options="ditable:false, url:'../../takeTimeAction_listajax.action',valueField:'id',textField:'name'"
+							type="text" name="takeTimeId" class="easyui-combobox"
+							required="true" /></td>
 					</tr>
 					<tr>
 						<td colspan="3"><a id="associationCourierBtn" href="#"
-							class="easyui-linkbutton" data-options="iconCls:'icon-save'">关联快递员</a>
-						</td>
+							onclick="associateCourier()" class="easyui-linkbutton"
+							data-options="iconCls:'icon-save'">关联快递员</a></td>
 					</tr>
 				</table>
 			</form>
 		</div>
 	</div>
+	<script type="text/javascript">
+		// 关联快递员
+		function associateCourier() {
+			if ($("#courierForm").form("validate")) {
+
+				// 给定区ID赋值
+				var rows = $("#grid").datagrid("getSelections");
+				$("#courierFixedAreaId").val(rows[0].id)
+				//提交表单
+				$("#courierForm").submit()
+			}
+		}
+	</script>
 </body>
 
 </html>

@@ -114,10 +114,33 @@ public class FixedAreaAction extends CommonAction<FixedArea> {
         WebClient.create(
                 "http://localhost:8180/crm/webService/customerService/assignCustomers2FixedArea")
                 .query("fixedAreaId", getModel().getId())
-                .query("customerIds",customerIds)
+                .query("customerIds", customerIds)
                 .type(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .put(null);
+                .accept(MediaType.APPLICATION_JSON).put(null);
+        return SUCCESS;
+    }
+
+    // 使用属性驱动获取快递员和时间的ID
+    private Long courierId;
+    private Long takeTimeId;
+
+    public void setCourierId(Long courierId) {
+        this.courierId = courierId;
+    }
+
+    public void setTakeTimeId(Long takeTimeId) {
+        this.takeTimeId = takeTimeId;
+    }
+
+    // 关联快递员
+    @Action(value = "fixedAreaAction_associationCourierToFixedArea",
+            results = {@Result(name = "success",
+                    location = "/pages/base/fixed_area.html",
+                    type = "redirect")})
+    public String associationCourierToFixedArea() throws IOException {
+
+        fixedAreaService.associationCourierToFixedArea(getModel().getId(),
+                courierId, takeTimeId);
         return SUCCESS;
     }
 }
