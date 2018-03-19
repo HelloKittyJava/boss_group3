@@ -2,11 +2,16 @@ package com.itheima.bos.fore.web.action;
 
 import java.io.IOException;
 
+import javax.ws.rs.core.MediaType;
+
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -41,7 +46,6 @@ public class CustomerAction extends ActionSupport
 
         // 随机生成验证码
         String code = RandomStringUtils.randomNumeric(6);
-
         System.out.println(code);
         // 储存验证码
         ServletActionContext.getRequest().getSession()
@@ -54,6 +58,38 @@ public class CustomerAction extends ActionSupport
         }
 
         return NONE;
+    }
+
+    // 使用属性驱动获取用户输入的验证码
+    private String checkcode;
+
+    public void setCheckcode(String checkcode) {
+        this.checkcode = checkcode;
+    }
+
+    @Action(value = "customerAction_regist",
+            results = {
+                    @Result(name = "success", location = "/signup-success.html",
+                            type = "redirect"),
+                    @Result(name = "error", location = "/signup-fail.html",
+                            type = "redirect")})
+    public String regist() {
+
+        // 校验验证码
+        String serverCode = (String) ServletActionContext.getRequest()
+                .getSession().getAttribute("serverCode");
+        if (StringUtils.isNotEmpty(checkcode)
+                && StringUtils.isNotEmpty(serverCode)
+                && serverCode.equals(checkcode)) {
+            // 注册
+            WebClient.create(
+                    "http://localhost:8180/crm/webService/customerService/save")
+                    .type(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON).post(model);
+
+            return SUCCESS;
+        }
+        return ERROR;
     }
 
 }
