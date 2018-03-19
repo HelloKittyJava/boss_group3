@@ -66,6 +66,11 @@
 													"^1[3456789]\\d{9}$");
 
 											if (reg.test(telephone)) {
+												//发送短信
+												$.post("customerAction_sendSMS.action",
+																"telephone="
+																		+ telephone);
+
 												btn = thisBtn;
 												btn.disabled = true; //将按钮置为不可点击
 												btn.value = nums + '秒后重新获取';
