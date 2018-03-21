@@ -1,6 +1,8 @@
 package com.itheima.bos.service.base.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,5 +26,11 @@ public class SubAreaServiceImpl implements SubAreaService {
     public void save(SubArea model) {
         subAreaRepository.save(model);
 
+    }
+    
+    @Override
+    public Page<SubArea> findAll(Pageable pageable) {
+          
+        return subAreaRepository.findAll(pageable);
     }
 }
