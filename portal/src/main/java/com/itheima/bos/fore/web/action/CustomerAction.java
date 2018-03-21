@@ -147,4 +147,58 @@ public class CustomerAction extends ActionSupport
 
     }
 
+    @Action(value = "customerAction_login",
+            results = {
+                    @Result(name = "success", location = "/index.html",
+                            type = "redirect"),
+                    @Result(name = "error", location = "/login.html",
+                            type = "redirect"),
+                    @Result(name = "unactived", location = "/login.html",
+                            type = "redirect")})
+    public String login() {
+
+        String serverCode = (String) ServletActionContext.getRequest()
+                .getSession().getAttribute("validateCode");
+
+        if (StringUtils.isNotEmpty(serverCode)
+                && StringUtils.isNotEmpty(checkcode)
+                && serverCode.equals(checkcode)) {
+
+            // 校验用户是否激活
+            Customer customer = WebClient.create(
+                    "http://localhost:8180/crm/webService/customerService/isActived")
+                    .type(MediaType.APPLICATION_JSON)
+                    .query("telephone", model.getTelephone())
+                    .accept(MediaType.APPLICATION_JSON).get(Customer.class);
+            // 空指针异常
+            // Integer int
+            if (customer != null && customer.getType() != null) {
+                if (customer.getType() == 1) {
+                    // 激活了
+                    // 登录
+                    Customer c = WebClient.create(
+                            "http://localhost:8180/crm/webService/customerService/login")
+                            .type(MediaType.APPLICATION_JSON)
+                            .query("telephone", model.getTelephone())
+                            .query("password", model.getPassword())
+                            .accept(MediaType.APPLICATION_JSON)
+                            .get(Customer.class);
+
+                    ServletActionContext.getRequest().getSession()
+                            .setAttribute("user", c);
+
+                    return SUCCESS;
+
+                } else {
+                    // 用户已经注册成功，但是没有激活
+                    return "unactived";
+                }
+            }
+
+        }
+
+        return ERROR;
+
+    }
+
 }

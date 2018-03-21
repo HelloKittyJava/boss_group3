@@ -31,6 +31,7 @@
 	// generate a random code
 	String capstr = hash1.substring(0, 4);
 	session.setAttribute("validateCode", capstr);
+	System.out.println(capstr);
 	g.setColor(new Color(0, 100, 0));
 	g.setFont(new Font("Candara", Font.BOLD, 24));
 	g.drawString(capstr, 8, 24);
