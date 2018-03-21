@@ -38,8 +38,46 @@
 		$('#searchWindow').window("open");
 	}
 
+	//关联分区
 	function doAssociations() {
-		$('#customerWindow').window('open');
+
+		var rows = $("#grid").datagrid("getSelections")
+		if (rows.length == 1) {
+			//打开窗口
+			$('#subAreaWindow').window('open');
+			//清空节点中的数据
+			$("#noassociationSubAreaSelect").empty();
+			$("#associationSubAreaSelect").empty();
+			//发起请求查询未关联的分区
+			$.post("../../subAreaAction_findUnAssociatedSubAreas.action",
+					function(data) {
+						for (var i = 0; i < data.length; i++) {
+							var id = data[i].id;
+							var keyWords = data[i].keyWords;
+
+							$("#noassociationSubAreaSelect").append(
+									"<option value='"+id+"'>" + keyWords+ "</option>")
+						}
+
+					});
+
+			// 获取定区的ID
+			var id = rows[0].id;
+			//发起请求查询已关联到当前定区的分区
+			$.post("../../subAreaAction_findAssociatedSubAreas.action",
+					"id=" + id, function(data) {
+						for (var i = 0; i < data.length; i++) {
+							var id = data[i].id;
+							var keyWords = data[i].keyWords;
+						
+
+							$("#associationSubAreaSelect").append(
+									"<option value='"+id+"'>" + keyWords + "</option>")
+						}
+					})
+		} else {
+			$.messager.alert("提示", "您最多也只能选择一条数据进行操作", "warning")
+		}
 	}
 	// 关联客户
 	function doCustomerAssociations() {
@@ -476,6 +514,67 @@
 
 			// 提交表单
 			$("#customerForm").submit();
+		}
+	</script>
+
+
+	<!-- 关联分区窗口 -->
+	<div modal="true" class="easyui-window" title="关联分区窗口"
+		id="subAreaWindow" collapsible="false" closed="true"
+		minimizable="false" maximizable="false"
+		style="top: 20px; left: 200px; width: 400px; height: 300px;">
+		<div style="overflow: auto; padding: 5px;" border="false">
+			<form id="subAreaForm"
+				action="../../fixedAreaAction_assignSubAreas2FixedArea.action"
+				method="post">
+				<table class="table-edit" width="80%" align="center">
+					<tr class="title">
+						<td colspan="3">关联分区</td>
+					</tr>
+					<tr>
+						<td><input type="hidden" name="id" id="subAreaFixedAreaId" />
+							<!-- size: 指定一次可以显示多少条数据  --> <!-- multiple: 可以选择多条数据--> <select
+							id="noassociationSubAreaSelect" multiple="multiple" size="10">
+
+
+						</select></td>
+						<td><input type="button" value="》》" id="toRight"
+							onclick="moveSubArea2Right()"> <br /> <input
+							type="button" value="《《" id="toLeft" onclick="moveSubArea2Left()"></td>
+						<td><select id="associationSubAreaSelect" name="subAreaIds"
+							multiple="multiple" size="10"></select></td>
+					</tr>
+					<tr>
+						<td colspan="3"><a id="associationBtn" href="#"
+							onclick="associateSubArea2FixedArea()" class="easyui-linkbutton"
+							data-options="iconCls:'icon-save'">关联分区</a></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		function moveSubArea2Right() {
+			$("#associationSubAreaSelect").append(
+					$("#noassociationSubAreaSelect option:selected"))
+		}
+		function moveSubArea2Left() {
+			$("#noassociationSubAreaSelect").append(
+					$("#associationSubAreaSelect option:selected"))
+		}
+		function associateSubArea2FixedArea() {
+
+			// 给定区ID赋值
+			var rows = $("#grid").datagrid("getSelections");
+
+			$("#subAreaFixedAreaId").val(rows[0].id)
+			// 选中右侧的下拉框中所有的数据
+
+			$("#associationSubAreaSelect option").attr("selected", "selected")
+
+			// 提交表单
+			$("#subAreaForm").submit();
 		}
 	</script>
 

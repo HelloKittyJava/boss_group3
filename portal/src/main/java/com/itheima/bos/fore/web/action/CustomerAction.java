@@ -184,17 +184,20 @@ public class CustomerAction extends ActionSupport
                             .accept(MediaType.APPLICATION_JSON)
                             .get(Customer.class);
 
-                    ServletActionContext.getRequest().getSession()
-                            .setAttribute("user", c);
+                    if (c != null) {
+                        ServletActionContext.getRequest().getSession()
+                                .setAttribute("user", c);
 
-                    return SUCCESS;
+                        return SUCCESS;
+                    } else {
+                        return ERROR;
+                    }
 
                 } else {
                     // 用户已经注册成功，但是没有激活
                     return "unactived";
                 }
             }
-
         }
 
         return ERROR;
