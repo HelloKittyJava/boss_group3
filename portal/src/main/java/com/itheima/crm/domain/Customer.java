@@ -28,7 +28,7 @@ public class Customer {
     @Column(name = "C_PASSWORD")
     private String password; // 密码
     @Column(name = "C_TYPE")
-    private Integer type; // 类型
+    private Integer type; // 类型 1：激活
     @Column(name = "C_BRITHDAY")
     @Temporal(TemporalType.DATE)
     private Date birthday; // 生日

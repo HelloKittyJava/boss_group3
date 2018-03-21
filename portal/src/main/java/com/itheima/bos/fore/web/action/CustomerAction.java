@@ -99,14 +99,52 @@ public class CustomerAction extends ActionSupport
             redisTemplate.opsForValue().set(model.getTelephone(), activeCode, 1,
                     TimeUnit.DAYS);
             String emailBody =
-                    "感谢您注册本网站的帐号，请在24小时之内点击<a href='http://localhost:8280/portal/customerAction_active.action?activeCode=47328947&telephone="
-                            + model.getTelephone() + "'>本链接</a>激活您的帐号";
+                    "感谢您注册本网站的帐号，请在24小时之内点击<a href='http://localhost:8280/portal/customerAction_active.action?activeCode="
+                            + activeCode + "&telephone=" + model.getTelephone()
+                            + "'>本链接</a>激活您的帐号";
             // 发送激活邮件
             MailUtils.sendMail(model.getEmail(), "激活邮件", emailBody);
 
             return SUCCESS;
         }
         return ERROR;
+    }
+
+    // 使用属性驱动获取激活码
+    private String activeCode;
+
+    public void setActiveCode(String activeCode) {
+        this.activeCode = activeCode;
+    }
+
+    @Action(value = "customerAction_active",
+            results = {
+                    @Result(name = "success", location = "/login.html",
+                            type = "redirect"),
+                    @Result(name = "error", location = "/signup-fail.html",
+                            type = "redirect")})
+    public String active() {
+
+        // 比对激活码
+        String serverCode =
+                redisTemplate.opsForValue().get(model.getTelephone());
+
+        if (StringUtils.isNotEmpty(serverCode)
+                && StringUtils.isNotEmpty(activeCode)
+                && serverCode.equals(activeCode)) {
+            // 判断用户是否已经激活
+            // 激活
+            WebClient.create(
+                    "http://localhost:8180/crm/webService/customerService/active")
+                    .type(MediaType.APPLICATION_JSON)
+                    .query("telephone", model.getTelephone())
+                    .accept(MediaType.APPLICATION_JSON).put(null);
+
+            return SUCCESS;
+        }
+
+        return ERROR;
+
     }
 
 }
