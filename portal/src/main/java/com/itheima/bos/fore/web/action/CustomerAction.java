@@ -1,6 +1,7 @@
 package com.itheima.bos.fore.web.action;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.core.MediaType;
 
@@ -12,11 +13,14 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.aliyuncs.exceptions.ClientException;
 import com.itheima.crm.domain.Customer;
+import com.itheima.utils.MailUtils;
 import com.itheima.utils.SmsUtils;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -67,6 +71,9 @@ public class CustomerAction extends ActionSupport
         this.checkcode = checkcode;
     }
 
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
     @Action(value = "customerAction_regist",
             results = {
                     @Result(name = "success", location = "/signup-success.html",
@@ -86,6 +93,16 @@ public class CustomerAction extends ActionSupport
                     "http://localhost:8180/crm/webService/customerService/save")
                     .type(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON).post(model);
+            // 生成的验证码
+            String activeCode = RandomStringUtils.randomNumeric(32);
+            // 存储验证码
+            redisTemplate.opsForValue().set(model.getTelephone(), activeCode, 1,
+                    TimeUnit.DAYS);
+            String emailBody =
+                    "感谢您注册本网站的帐号，请在24小时之内点击<a href='http://localhost:8280/portal/customerAction_active.action?activeCode=47328947&telephone="
+                            + model.getTelephone() + "'>本链接</a>激活您的帐号";
+            // 发送激活邮件
+            MailUtils.sendMail(model.getEmail(), "激活邮件", emailBody);
 
             return SUCCESS;
         }
