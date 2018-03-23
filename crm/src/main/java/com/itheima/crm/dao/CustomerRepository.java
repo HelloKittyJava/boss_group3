@@ -7,6 +7,8 @@ package com.itheima.crm.dao;
 
 import java.util.List;
 
+import javax.ws.rs.QueryParam;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -40,4 +42,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     // 登录
     Customer findByTelephoneAndPassword(String telephone, String password);
+
+    // 根据地址查询定区ID
+    @Query("select fixedAreaId from Customer where address = ?")
+    String findFixedAreaIdByAdddress(String address);
 }

@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @description:客户信息表
- * 
+ *
  */
 @Entity
 @Table(name = "T_CUSTOMER")
