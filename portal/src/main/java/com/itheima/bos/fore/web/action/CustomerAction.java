@@ -3,6 +3,10 @@ package com.itheima.bos.fore.web.action;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
+import javax.jms.Message;
+import javax.jms.Session;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -16,6 +20,8 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 
 import com.aliyuncs.exceptions.ClientException;
@@ -44,22 +50,31 @@ public class CustomerAction extends ActionSupport
         return model;
     }
 
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
     // 发送验证码
     @Action(value = "customerAction_sendSMS")
     public String sendSMS() throws IOException {
 
         // 随机生成验证码
-        String code = RandomStringUtils.randomNumeric(6);
+        final String code = RandomStringUtils.randomNumeric(6);
         System.out.println(code);
         // 储存验证码
         ServletActionContext.getRequest().getSession()
                 .setAttribute("serverCode", code);
+
         // 发送验证码
-        try {
-            SmsUtils.sendSms(model.getTelephone(), code);
-        } catch (ClientException e) {
-            e.printStackTrace();
-        }
+        jmsTemplate.send("sms", new MessageCreator() {
+
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                MapMessage message = session.createMapMessage();
+                message.setString("tel", model.getTelephone());
+                message.setString("code", code);
+                return message;
+            }
+        });
 
         return NONE;
     }

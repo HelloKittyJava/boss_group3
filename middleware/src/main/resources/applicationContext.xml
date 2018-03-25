@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:amq="http://activemq.apache.org/schema/core" xmlns:jms="http://www.springframework.org/schema/jms"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+       http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.1.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+       http://www.springframework.org/schema/data/jpa 
+       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+       http://www.springframework.org/schema/jms
+        http://www.springframework.org/schema/jms/spring-jms.xsd
+       http://activemq.apache.org/schema/core
+        http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd ">
+	<!-- 指定Spring框架扫描的包 -->
+	<context:component-scan base-package="com.itheima.activemq" />
+	<!--
+		################################# 指定ActiveMQ 连接工厂 ########################################
+		真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供
+	-->
+
+	<!-- 上面的写法和下面的写法是一样的 -->
+	<amq:connectionFactory userName="admin" password="admin"
+		id="amqConnectionFactory" brokerURL="tcp://localhost:61616"></amq:connectionFactory>
+	<!--
+		################################# 指定Spring Caching连接工厂 #################################
+	-->
+	<bean id="connectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<!-- 目标ConnectionFactory对应真实的可以产生JMS Connection的ConnectionFactory -->
+		<property name="targetConnectionFactory" ref="amqConnectionFactory"></property>
+		<!-- Session缓存数量 -->
+		<property name="sessionCacheSize" value="100" />
+	</bean>
+
+	<!--
+		################################# 指定消息的消费者 #################################
+	-->
+	<!--
+
+		destination-type: 监听的消息类型
+		queue: 队列模式,也叫点对点模式
+		topic:发布/订阅模式 ,也叫主题模式
+		container-type:容器的类型
+		acknowledge : 应答机制
+	-->
+	<jms:listener-container destination-type="queue"
+		container-type="default" connection-factory="connectionFactory"
+		acknowledge="auto">
+		<!--
+			注入消费者
+			destination: 队列的名字
+			ref: 引用对象,指定真正的消费者是谁
+		-->
+		<jms:listener destination="sms" ref="SMSConsumer" />
+	</jms:listener-container>
+</beans>
