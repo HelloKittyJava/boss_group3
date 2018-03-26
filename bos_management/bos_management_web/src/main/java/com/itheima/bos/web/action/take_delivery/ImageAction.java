@@ -69,11 +69,14 @@ public class ImageAction extends ActionSupport {
             String fileName =
                     UUID.randomUUID().toString().replaceAll("-", "") + suffix;
             File destFile = new File(dirRealPath + "/" + fileName);
+
+            // 保存文件
             FileUtils.copyFile(imgFile, destFile);
 
             // http://localhost:8080/bos_management_web/upload/a.jpg
             // /bos_management_web/upload/a.jpg
             // /bos_management_web
+            // 获取本项目路径
             String contextPath = servletContext.getContextPath();
 
             map.put("error", 0);

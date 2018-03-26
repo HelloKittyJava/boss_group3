@@ -87,4 +87,57 @@
 			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
 		</jaxrs:outInterceptors>
 	</jaxrs:server>
+
+	<!-- 初始化shiro框架提供的过滤器 -->
+	<bean id="shiroFilterFactoryBean" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 注入安全管理器 -->
+		<property name="securityManager" ref="securityManager"></property>
+
+		<!-- 权限认证的页面,登录页面 -->
+		<property name="loginUrl" value="/login.html"></property>
+		<!-- 权限认证成功以后要跳转的页面 -->
+		<property name="successUrl" value="/index.html"></property>
+		<!-- 权限不足要跳转的页面 -->
+		<property name="unauthorizedUrl" value="/unauthorizedUrl.html"></property>
+		<!--指定拦截的规则 -->
+		<property name="filterChainDefinitions">
+			<!--
+				authc:框架提供的过滤器,有权限就放行,没有权限就拦截
+				anon:框架提供的过滤器,可以匿名访问
+				拦截的规则执行的时候是从上往下执行的,一旦有一个规则匹配成功,后面的规则就不再执行了
+				拦截的规则不可以折行
+			-->
+			<value>
+
+				/css/* = anon
+				/data/* = anon
+				/images/* = anon
+				/js/** = anon
+				/validatecode.jsp = anon
+				/userAction_login.action = anon
+				/** = authc
+			</value>
+		</property>
+	</bean>
+
+	<!-- 注册安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- 注入realm -->
+		<property name="realm" ref="userRealm"></property>
+	</bean>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </beans>
