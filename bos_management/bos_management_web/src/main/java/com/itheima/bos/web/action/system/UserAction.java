@@ -57,9 +57,13 @@ public class UserAction extends CommonAction<User> {
 
             // 主体,代表当前用户
             Subject subject = SecurityUtils.getSubject();
+            // 使用代码校验权限
+            // subject.checkPermission("");
+
             AuthenticationToken token = new UsernamePasswordToken(
                     getModel().getUsername(), getModel().getPassword());
             try {
+                // 执行登录
                 subject.login(token);
                 // 方法的返回值由Realm中doGetAuthenticationInfo方法定义SimpleAuthenticationInfo对象的时候,第一个参数决定的
                 User user = (User) subject.getPrincipal();

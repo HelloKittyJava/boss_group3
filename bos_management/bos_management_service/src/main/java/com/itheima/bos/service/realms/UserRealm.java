@@ -6,6 +6,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,17 @@ public class UserRealm extends AuthorizingRealm {
     private UserRepository userRepository;
 
     // 授权的方法
+    // 每一次访问需要权限的资源的时候,都会调用授权的方法
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(
             PrincipalCollection principals) {
 
-        return null;
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        // 授权
+        info.addStringPermission("courierAction_pageQuery");
+        //授予角色
+        info.addRole("admin");
+        return info;
     }
 
     // 认证的方法
