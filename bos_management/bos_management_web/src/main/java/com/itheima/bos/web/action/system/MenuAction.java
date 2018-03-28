@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -43,6 +44,14 @@ public class MenuAction extends CommonAction<Menu> {
                 new String[] {"roles", "childrenMenus", "parentMenu"});
         list2json(list, jsonConfig);
         return NONE;
+    }
+
+    @Action(value = "menuAction_save", results = {@Result(name = "success",
+            location = "/pages/system/menu.html", type = "redirect")})
+    public String save() {
+
+        menuService.save(getModel());
+        return SUCCESS;
     }
 
 }

@@ -27,4 +27,16 @@ public class MenuServiceImpl implements MenuService {
 
         return menuRepository.findByParentMenuIsNull();
     }
+
+    @Override
+    public void save(Menu menu) {
+        // 导致异常的原因是parentMenu字段是一个瞬时态的对象
+        // 判断用户是否是要添加一个一级菜单
+        if (menu.getParentMenu() != null
+                && menu.getParentMenu().getId() == null) {
+            menu.setParentMenu(null);
+        }
+
+        menuRepository.save(menu);
+    }
 }
