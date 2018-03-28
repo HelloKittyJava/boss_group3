@@ -1,6 +1,7 @@
 package com.itheima.bos.web.action.system;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -73,5 +74,17 @@ public class RoleAction extends CommonAction<Role> {
 
         roleService.save(getModel(), menuIds, permissionIds);
         return SUCCESS;
+    }
+
+    @Action(value = "roleAction_findAll")
+    public String findAll() throws IOException {
+
+        Page<Role> page = roleService.findAll(null);
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[] {"users", "permissions", "menus"});
+
+        List<Role> list = page.getContent();
+        list2json(list, jsonConfig);
+        return NONE;
     }
 }
