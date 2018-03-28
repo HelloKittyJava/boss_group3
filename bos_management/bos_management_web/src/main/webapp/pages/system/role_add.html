@@ -44,7 +44,7 @@
 		};
 
 		$.ajax({
-			url : '../../data/menu.json',
+			url : '../../menuAction_findLevelOne.action',
 			type : 'POST',
 			dataType : 'text',
 			success : function(data) {
@@ -58,7 +58,25 @@
 
 		// 点击保存
 		$('#save').click(function() {
-			location.href = 'role.html';
+			if ($("#roleForm").form("validate")) {
+				//获取ztree
+				var treeObj = $.fn.zTree.getZTreeObj("menuTree");
+				// true : 获取选中的节点
+				// false : 获取未选中的节点
+				var nodes = treeObj.getCheckedNodes(true);
+				// 遍历选中的节点
+				var arr = new Array();
+				for (var i = 0; i < nodes.length; i++) {
+					var id = nodes[i].id;
+					arr.push(id);
+				}
+				// 获取选中的菜单的ID
+				var ids = arr.toString();
+				//使用隐藏域把菜单的ID传递给后台
+				$("#menuIds").val(ids);
+				// 提交表单
+				$("#roleForm").submit();
+			}
 		});
 	});
 </script>
@@ -74,7 +92,10 @@
 	</div>
 	<div region="center" style="overflow: auto; padding: 5px;"
 		border="false">
-		<form id="roleForm" method="post">
+		<form id="roleForm" method="post"
+			action="../../roleAction_save.action">
+
+			<input type="hidden" id="menuIds" name="menuIds" />
 			<table class="table-edit" width="80%" align="center">
 				<tr class="title">
 					<td colspan="2">角色信息</td>
@@ -101,9 +122,7 @@
 				</tr>
 				<tr>
 					<td>权限选择</td>
-					<td id="permissonTd">
-						
-					</td>
+					<td id="permissonTd"></td>
 				</tr>
 				<tr>
 					<td>菜单授权</td>
@@ -117,13 +136,19 @@
 </body>
 <script type="text/javascript">
 	$(function() {
-		$.post("../../permissionAction_findAll.action", function(data) {
-			for (var i = 0; i < data.length; i++) {
-		var id=data[i].id;
-		var name=data[i].name;
-				$("#permissonTd").append('<input id="'+id+'" type="checkbox" name="permissionIds" value="'+id+'" /><label for="'+id+'">'+name+'</label>')
-			}
-		})
+		$
+				.post(
+						"../../permissionAction_findAll.action",
+						function(data) {
+							for (var i = 0; i < data.length; i++) {
+								var id = data[i].id;
+								var name = data[i].name;
+								$("#permissonTd")
+										.append(
+												'<input id="'+id+'" type="checkbox" name="permissionIds" value="'+id+'" /><label for="'+id+'">'
+														+ name + '</label>')
+							}
+						})
 	})
 </script>
 
