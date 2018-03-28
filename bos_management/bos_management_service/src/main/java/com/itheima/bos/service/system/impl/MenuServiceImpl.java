@@ -3,6 +3,8 @@ package com.itheima.bos.service.system.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,5 +40,11 @@ public class MenuServiceImpl implements MenuService {
         }
 
         menuRepository.save(menu);
+    }
+
+    @Override
+    public Page<Menu> findAll(Pageable pageable) {
+
+        return menuRepository.findAll(pageable);
     }
 }

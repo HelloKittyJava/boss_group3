@@ -9,8 +9,12 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
+import com.itheima.bos.domain.base.Standard;
 import com.itheima.bos.domain.system.Menu;
 import com.itheima.bos.service.system.MenuService;
 import com.itheima.bos.web.action.CommonAction;
@@ -52,6 +56,25 @@ public class MenuAction extends CommonAction<Menu> {
 
         menuService.save(getModel());
         return SUCCESS;
+    }
+
+    // struts框架在封装数据的时候优先封装给模型对象的
+    @Action(value = "menuAction_pageQuery")
+    public String pageQuery() throws IOException {
+
+        // EasyUI的页码是从1开始的
+        // SPringDataJPA的页码是从0开始的
+        // 所以要-1
+
+        Pageable pageable = new PageRequest(
+                Integer.parseInt(getModel().getPage()) - 1, rows);
+
+        Page<Menu> page = menuService.findAll(pageable);
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(
+                new String[] {"roles", "childrenMenus", "parentMenu"});
+        page2json(page, jsonConfig);
+        return NONE;
     }
 
 }
