@@ -132,9 +132,8 @@
 				拦截的规则执行的时候是从上往下执行的,一旦有一个规则匹配成功,后面的规则就不再执行了
 				拦截的规则不可以折行
 			-->
-			<value>
-
-				/css/* = anon
+			<!-- 
+							/css/* = anon
 				/data/* = anon
 				/images/* = anon
 				/js/** = anon
@@ -143,6 +142,11 @@
 				/courierAction_pageQuery.action = perms["courierAction_pageQuery"]
 				/hi.html = perms["courierAction_pageQuery"]
 				/** = authc
+			 -->
+			<value>
+
+			
+				/** = anon
 			</value>
 		</property>
 	</bean>
