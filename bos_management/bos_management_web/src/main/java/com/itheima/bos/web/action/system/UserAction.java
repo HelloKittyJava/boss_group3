@@ -1,5 +1,7 @@
 package com.itheima.bos.web.action.system;
 
+import java.util.ArrayList;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -65,6 +67,7 @@ public class UserAction extends CommonAction<User> {
             try {
                 // 执行登录
                 subject.login(token);
+
                 // 方法的返回值由Realm中doGetAuthenticationInfo方法定义SimpleAuthenticationInfo对象的时候,第一个参数决定的
                 User user = (User) subject.getPrincipal();
                 ServletActionContext.getRequest().getSession()
@@ -87,6 +90,17 @@ public class UserAction extends CommonAction<User> {
         }
 
         return LOGIN;
+    }
+
+    @Action(value = "userAction_logout", results = {@Result(name = "success",
+            location = "/login.html", type = "redirect")})
+    public String logout() {
+
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+
+        return SUCCESS;
+
     }
 
 }
