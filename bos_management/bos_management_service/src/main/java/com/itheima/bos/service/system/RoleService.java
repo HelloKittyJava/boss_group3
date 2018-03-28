@@ -12,4 +12,6 @@ import com.itheima.bos.domain.system.Role;
  */
 public interface RoleService {
     Page<Role> findAll(Pageable pageable);
+
+    void save(Role role, String menuIds, Long[] permissionIds);
 }

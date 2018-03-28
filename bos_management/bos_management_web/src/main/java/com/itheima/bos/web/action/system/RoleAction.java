@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
@@ -51,5 +52,26 @@ public class RoleAction extends CommonAction<Role> {
         jsonConfig.setExcludes(new String[] {"users", "permissions", "menus"});
         page2json(page, jsonConfig);
         return NONE;
+    }
+
+    // 使用属性驱动获取菜单和权限的ID
+    private String menuIds;
+
+    public void setMenuIds(String menuIds) {
+        this.menuIds = menuIds;
+    }
+
+    private Long[] permissionIds;
+
+    public void setPermissionIds(Long[] permissionIds) {
+        this.permissionIds = permissionIds;
+    }
+
+    @Action(value = "roleAction_save", results = {@Result(name = "success",
+            location = "/pages/system/role.html", type = "redirect")})
+    public String save() {
+
+        roleService.save(getModel(), menuIds, permissionIds);
+        return SUCCESS;
     }
 }
