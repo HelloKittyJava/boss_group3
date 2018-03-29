@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
 	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
@@ -17,9 +20,12 @@
 		指定连接池配置
 		#########################################################
 	-->
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:ORCL" />
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass"
+			value="oracle.jdbc.driver.OracleDriver" />
+		<property name="jdbcUrl"
+			value="jdbc:oracle:thin:@localhost:1521:ORCL" />
 		<property name="user" value="heima28" />
 		<property name="password" value="heima28" />
 	</bean>
@@ -32,28 +38,34 @@
 			指定JPA扫描的实体类所在的包
 			#########################################################
 		-->
-		<property name="packagesToScan" value="com.itheima.bos.domain" />
+		<property name="packagesToScan"
+			value="com.itheima.bos.domain" />
 		<!-- 指定持久层提供者为Hibernate -->
 		<property name="persistenceProvider">
 			<bean class="org.hibernate.ejb.HibernatePersistence" />
 		</property>
 		<property name="jpaVendorAdapter">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+			<bean
+				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 				<!-- 自动建表 -->
 				<property name="generateDdl" value="true" />
 				<property name="database" value="ORACLE" />
-				<property name="databasePlatform" value="org.hibernate.dialect.Oracle10gDialect" />
+				<property name="databasePlatform"
+					value="org.hibernate.dialect.Oracle10gDialect" />
 				<property name="showSql" value="true" />
 			</bean>
 		</property>
 		<property name="jpaDialect">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+			<bean
+				class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
 		</property>
 	</bean>
 
 	<!-- 配置事务管理器 -->
-	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	<bean id="transactionManager"
+		class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory"
+			ref="entityManagerFactory" />
 	</bean>
 
 	<!--
@@ -64,7 +76,8 @@
 		DAO包下的类要使用Spring Data JPA框架进行扫描
 		#########################################################
 	-->
-	<context:component-scan base-package="com.itheima.bos.service,com.itheima.bos.web" />
+	<context:component-scan
+		base-package="com.itheima.bos.service,com.itheima.bos.web" />
 
 	<!--
 		开启事务注解
@@ -111,7 +124,8 @@
 	</jaxrs:server>
 
 	<!-- 初始化shiro框架提供的过滤器 -->
-	<bean id="shiroFilterFactoryBean" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+	<bean id="shiroFilterFactoryBean"
+		class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<!-- 注入安全管理器 -->
 		<property name="securityManager" ref="securityManager"></property>
 
@@ -120,9 +134,10 @@
 		<!-- 权限认证成功以后要跳转的页面 -->
 		<property name="successUrl" value="/index.html"></property>
 		<!-- 权限不足要跳转的页面
-		只对拦截器生效,不会注解方式生效
-		 -->
-		<property name="unauthorizedUrl" value="/unauthorizedUrl.html"></property>
+			只对拦截器生效,不会注解方式生效
+		-->
+		<property name="unauthorizedUrl"
+			value="/unauthorizedUrl.html"></property>
 		<!--指定拦截的规则 -->
 		<property name="filterChainDefinitions">
 			<!--
@@ -132,8 +147,8 @@
 				拦截的规则执行的时候是从上往下执行的,一旦有一个规则匹配成功,后面的规则就不再执行了
 				拦截的规则不可以折行
 			-->
-			<!-- 
-							/css/* = anon
+			<!--
+				/css/* = anon
 				/data/* = anon
 				/images/* = anon
 				/js/** = anon
@@ -142,11 +157,11 @@
 				/courierAction_pageQuery.action = perms["courierAction_pageQuery"]
 				/hi.html = perms["courierAction_pageQuery"]
 				/** = authc
-			 -->
+			-->
 			<value>
 
-			
-	             /css/* = anon
+
+				/css/* = anon
 				/data/* = anon
 				/images/* = anon
 				/js/** = anon
@@ -160,13 +175,19 @@
 	</bean>
 
 	<!-- 注册安全管理器 -->
-	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+	<bean id="securityManager"
+		class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<!-- 注入realm -->
 		<property name="realm" ref="userRealm"></property>
-		
+		<!-- 注入缓存管理器 -->
+		<property name="cacheManager" ref="cacheManager"></property>
 	</bean>
-
-
+	<!-- 注册缓存管理器 -->
+	<bean id="cacheManager"
+		class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<!-- 指定配置文件的位置 -->
+		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"></property>
+	</bean>
 
 
 
