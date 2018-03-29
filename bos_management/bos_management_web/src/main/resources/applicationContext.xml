@@ -146,7 +146,15 @@
 			<value>
 
 			
-				/** = anon
+	             /css/* = anon
+				/data/* = anon
+				/images/* = anon
+				/js/** = anon
+				/validatecode.jsp = anon
+				/userAction_login.action = anon
+				/courierAction_pageQuery.action = perms["courierAction_pageQuery"]
+				/hi.html = perms["courierAction_pageQuery"]
+				/** = authc
 			</value>
 		</property>
 	</bean>
@@ -155,6 +163,7 @@
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<!-- 注入realm -->
 		<property name="realm" ref="userRealm"></property>
+		
 	</bean>
 
 
