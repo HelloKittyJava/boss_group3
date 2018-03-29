@@ -6,10 +6,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -24,6 +31,7 @@ import org.springframework.stereotype.Controller;
 import com.itheima.bos.domain.base.Area;
 import com.itheima.bos.service.base.AreaService;
 import com.itheima.bos.web.action.CommonAction;
+import com.itheima.utils.FileDownloadUtils;
 import com.itheima.utils.PinYin4jUtils;
 
 import net.sf.json.JSONArray;
@@ -155,6 +163,77 @@ public class AreaAction extends CommonAction<Area> {
 
         list2json(list, jsonConfig);
 
+        return NONE;
+    }
+
+    // 加载文件
+    // 读取sheet
+    // 读取行
+    // 读取列
+
+    // 创建文件
+    // 创建sheet
+    // 创建行
+    // 创建列
+    // 写入数据
+    @Action(value = "areaAction_exportExcel")
+    public String exportExcel() throws IOException {
+        Page<Area> page = areaService.findAll(null);
+        List<Area> list = page.getContent();
+
+        // 在内存中创建了一个excel文件
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        // 创建sheet
+        HSSFSheet sheet = workbook.createSheet();
+        // 创建标题行
+        HSSFRow titleRow = sheet.createRow(0);
+        titleRow.createCell(0).setCellValue("省");
+        titleRow.createCell(1).setCellValue("市");
+        titleRow.createCell(2).setCellValue("区");
+        titleRow.createCell(3).setCellValue("邮编");
+        titleRow.createCell(4).setCellValue("简码");
+        titleRow.createCell(5).setCellValue("城市编码");
+
+        // 遍历数据,创建数据行
+        for (Area area : list) {
+            // 获取最后一行的行号
+            int lastRowNum = sheet.getLastRowNum();
+
+            HSSFRow dataRow = sheet.createRow(lastRowNum + 1);
+            dataRow.createCell(0).setCellValue(area.getProvince());
+            dataRow.createCell(1).setCellValue(area.getCity());
+            dataRow.createCell(2).setCellValue(area.getDistrict());
+            dataRow.createCell(3).setCellValue(area.getPostcode());
+            dataRow.createCell(4).setCellValue(area.getShortcode());
+            dataRow.createCell(5).setCellValue(area.getCitycode());
+        }
+        // 文件名
+        String filename = "区域数据统计.xls";
+
+        // 一个流两个头
+        HttpServletResponse response = ServletActionContext.getResponse();
+        ServletContext servletContext =
+                ServletActionContext.getServletContext();
+        ServletOutputStream outputStream = response.getOutputStream();
+        HttpServletRequest request = ServletActionContext.getRequest();
+
+        // 获取mimeType
+        // 先获取mimeType再重新编码,避免编码后后缀名丢失,导致获取失败
+        String mimeType = servletContext.getMimeType(filename);
+        // 获取浏览器的类型
+        String userAgent = request.getHeader("User-Agent");
+        // 对文件名重新编码
+        filename =
+                FileDownloadUtils.encodeDownloadFilename(filename, userAgent);
+
+        // 设置信息头
+        response.setContentType(mimeType);
+        response.setHeader("Content-Disposition",
+                "attachment; filename=" + filename);
+
+        // 写出文件
+        workbook.write(outputStream);
+        workbook.close();
         return NONE;
     }
 }
