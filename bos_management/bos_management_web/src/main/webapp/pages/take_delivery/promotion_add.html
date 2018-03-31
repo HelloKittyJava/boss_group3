@@ -28,53 +28,80 @@
 		//初始化KindEditor控件
 		KindEditor.ready(function(K) {
 			window.editor = K.create('#description', {
-				uploadJson : '../../imageAction_upload.action'//指定处理图片上传的Action的路径
+				uploadJson : '../../imageAction_upload.action',//指定处理图片上传的Action的路径
+				fileManagerJson : '../../imageAction_manager.action',//指定处理图片空间的Action的路径
+				allowFileManager : true
+			// 打开图片空间
 			});
 		});
 	});
+
+	// 提交表单
+	function saveData() {
+		if ($("#promotionForm").form("validate")) {
+			// 把写在kindeditor中的内容同步到textarea节点中
+			window.editor.sync();
+			$("#promotionForm").submit();
+		}
+	}
 </script>
 </head>
 <body class="easyui-layout" style="visibility: hidden;">
 	<div region="north" style="height: 31px; overflow: hidden;"
 		split="false" border="false">
 		<div class="datagrid-toolbar">
-			<a id="save" icon="icon-save" href="#" class="easyui-linkbutton"
-				plain="true">保存</a> <a id="back" icon="icon-back" href="#"
-				class="easyui-linkbutton" plain="true">返回列表</a>
+			<a id="save" icon="icon-save" onclick="saveData()"
+				class="easyui-linkbutton" plain="true">保存</a>
+			<a id="back" icon="icon-back" href="#" class="easyui-linkbutton"
+				plain="true">返回列表</a>
 		</div>
 	</div>
 	<div region="center" style="overflow: auto; padding: 5px;"
 		border="false">
-		<form id="promotionForm" method="post">
+		<form id="promotionForm" method="post"
+			action="../../promotionAction_save.action"
+			enctype="multipart/form-data">
 			<table class="table-edit" width="95%" align="center">
 				<tr class="title">
 					<td colspan="4">宣传任务</td>
 				</tr>
 				<tr>
 					<td>宣传概要(标题):</td>
-					<td colspan="3"><input type="text" name="title" id="title"
-						class="easyui-validatebox" required="true" /></td>
+					<td colspan="3">
+						<input type="text" name="title" id="title"
+							class="easyui-validatebox" required="true" />
+					</td>
 				</tr>
 				<tr>
 					<td>活动范围:</td>
-					<td><input type="text" name="activeScope" id="activeScope"
-						class="easyui-validatebox" /></td>
+					<td>
+						<input type="text" name="activeScope" id="activeScope"
+							class="easyui-validatebox" />
+					</td>
 					<td>宣传图片:</td>
-					<td><input type="file" name="titleImgFile" id="titleImg"
-						class="easyui-validatebox" required="true" /></td>
+					<td>
+						<input type="file" name="titleImgFile" id="titleImg"
+							class="easyui-validatebox" required="true" />
+					</td>
 				</tr>
 				<tr>
 					<td>发布时间:</td>
-					<td><input type="text" name="startDate" id="startDate"
-						class="easyui-datebox" required="true" /></td>
+					<td>
+						<input type="text" name="startDate" id="startDate"
+							class="easyui-datebox" required="true" />
+					</td>
 					<td>失效时间:</td>
-					<td><input type="text" name="endDate" id="endDate"
-						class="easyui-datebox" required="true" /></td>
+					<td>
+						<input type="text" name="endDate" id="endDate"
+							class="easyui-datebox" required="true" />
+					</td>
 				</tr>
 				<tr>
 					<td>宣传内容(活动描述信息):</td>
-					<td colspan="3"><textarea name="description" id="description"
-							style="width: 80%" rows="20"></textarea></td>
+					<td colspan="3">
+						<textarea name="description" id="description" style="width: 80%"
+							rows="20"></textarea>
+					</td>
 				</tr>
 			</table>
 		</form>
