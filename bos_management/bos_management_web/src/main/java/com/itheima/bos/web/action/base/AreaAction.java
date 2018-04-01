@@ -236,4 +236,11 @@ public class AreaAction extends CommonAction<Area> {
         workbook.close();
         return NONE;
     }
+
+    @Action(value = "areaAction_exportCharts")
+    public String exportCharts() throws IOException {
+        List<Object[]> list = areaService.exportCharts();
+        list2json(list, null);
+        return NONE;
+    }
 }
