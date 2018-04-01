@@ -42,6 +42,11 @@
 		//发送一个请求,查询数据,拼装文件
 		window.location.href = "../../areaAction_exportExcel.action"
 	}
+	//导出PDF
+	function doExportPDF() {
+		//发送一个请求,查询数据,拼装文件
+		window.location.href = "../../areaAction_exportPDF.action"
+	}
 	//导出图表
 	function doExportCharts() {
 		// 打开窗口
@@ -93,6 +98,11 @@
 		text : '导出图表',
 		iconCls : 'icon-redo',
 		handler : doExportCharts
+	} , {
+		id : 'button-export',
+		text : '导出PDF',
+		iconCls : 'icon-redo',
+		handler : doExportPDF
 	} ];
 	// 定义列
 	var columns = [ [ {
