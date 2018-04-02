@@ -1,11 +1,15 @@
 package com.itheima.bos.web.action.base;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -22,6 +26,7 @@ import com.itheima.bos.service.base.FixedAreaService;
 import com.itheima.bos.web.action.CommonAction;
 import com.itheima.crm.domain.Customer;
 
+import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 /**
@@ -162,4 +167,33 @@ public class FixedAreaAction extends CommonAction<FixedArea> {
 
         return SUCCESS;
     }
+    
+    // 向CRM系统发起请求,根据定区id查询已关联定区的客户
+    @Action(value = "customerAction_findByFixedAreaId")
+    public String findByFixedAreaId() throws IOException {
+
+        Map<String , Object> map=new HashMap<>();
+        List<Customer> list = (List<Customer>) WebClient.create(
+                "http://localhost:8180/crm/webService/customerService/findCustomersAssociated2FixedArea")
+                .query("fixedAreaId", getModel().getId())
+                .type(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .getCollection(Customer.class);
+        map.put("total", list.size());
+        map.put("rows", list);
+
+        String json = JSONObject.fromObject(map).toString();
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(json);
+        
+        return NONE;
+    }
+    
+    
+    
+    
+    
+   
+    
 }

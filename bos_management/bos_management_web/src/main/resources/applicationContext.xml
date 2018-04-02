@@ -25,9 +25,10 @@
 		<property name="driverClass"
 			value="oracle.jdbc.driver.OracleDriver" />
 		<property name="jdbcUrl"
-			value="jdbc:oracle:thin:@192.168.75.128:1521:ORCL" />
-		<property name="user" value="itheima28" />
-		<property name="password" value="itheima28" />
+			value="jdbc:oracle:thin:@192.168.45.200:1521:ORCL" />
+		<property name="user" value=" heima_bos_team03" />
+		<property name="password" value=" heima_bos_team03" />
+			
 	</bean>
 	<!-- spring整合JPA -->
 	<bean id="entityManagerFactory"
@@ -193,8 +194,6 @@
 		<!-- 注入目标方法 -->
 		<property name="targetMethod" value="sendMail"></property>
 	</bean>
-
-	
 	<!-- 注册触发器,可以理解为这是一个闹钟 -->
 	<bean id="emailTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
@@ -206,8 +205,6 @@
 		<!-- 注入任务详情,闹钟响起的时候要做什么事情 -->
 		<property name="jobDetail" ref="jobDetail"></property>
 	</bean>
-	
-
 	<!--
 		spring提供的一个工厂类
 		任务工厂类
@@ -223,13 +220,10 @@
 			<!-- 指定具体的触发器,可以简单理解为具体的一个闹钟 -->
 			<list>
 				<ref bean="emailTrigger" />
-				<ref bean="promotionTrigger" />
 			</list>
 
 		</property>
 	</bean>
-	
-	
 
 
 
@@ -246,20 +240,6 @@
 		</jaxrs:outInterceptors>
 	</jaxrs:server>
 
-
-	<bean id="promotionTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="cronExpression">
-			<value>0 0 0 * * ?</value>
-		</property>
-		<property name="jobDetail" ref="jobDetail2"></property>
-	</bean>
-		
-	<bean id="jobDetail2"
-		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		
-		<property name="targetObject" ref="promotionJob"></property>
-		<property name="targetMethod" value="checkDate"></property>
-	</bean>
 
 
 

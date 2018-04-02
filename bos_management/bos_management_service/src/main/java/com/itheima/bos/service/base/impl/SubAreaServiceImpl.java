@@ -1,7 +1,13 @@
 package com.itheima.bos.service.base.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.itheima.bos.dao.base.AreaRepository;
+import com.itheima.bos.domain.base.Area;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +30,9 @@ public class SubAreaServiceImpl implements SubAreaService {
 
     @Autowired
     private SubAreaRepository subAreaRepository;
+
+    @Autowired
+    private AreaRepository areaRepository;
 
     @Override
     public void save(SubArea model) {
@@ -53,4 +62,5 @@ public class SubAreaServiceImpl implements SubAreaService {
         fixedArea.setId(fixedAreaId);
         return subAreaRepository.findByFixedArea(fixedArea);
     }
+
 }

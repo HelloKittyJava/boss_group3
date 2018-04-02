@@ -1,7 +1,11 @@
 package com.itheima.bos.service.base.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,6 +51,25 @@ public class AreaServiceImpl implements AreaService {
     public List<Object[]> exportCharts() {
 
         return areaRepository.exportCharts();
+    }
+
+    @Override
+    public List<Map<String, Object>> xjbcCharts() {
+
+        List<Object[]> list = areaRepository.xjbcCharts();
+        ArrayList<Map<String,Object>> arrayList = new ArrayList();
+        for (Object[] objects : list) {
+            HashMap<String, Object> map = new HashMap<>();
+            for (Object o : objects) {
+                if(o instanceof Long){
+                    map.put("data",new Long[]{(Long) o});
+                }else{
+                    map.put("name",(String)o);
+                }
+            }
+            arrayList.add(map);
+        }
+        return arrayList;
     }
 
 }
