@@ -14,7 +14,7 @@ import com.itheima.bos.service.take_delivery.WayBillService;
 
 /**
  * ClassName:WayBillServiceImpl <br/>
- * Function: <br/>
+ * Function: 
  * Date: 2018年3月25日 上午11:14:05 <br/>
  */
 @Service

@@ -38,10 +38,10 @@ import net.sf.json.JsonConfig;
  * Function: <br/>
  * Date: 2018年3月25日 上午11:15:01 <br/>
  */
-@Namespace("/") // 等价于struts.xml文件中package节点namespace属性
-@ParentPackage("struts-default") // 等价于struts.xml文件中package节点extends属性
-@Controller // spring 的注解,控制层代码
-@Scope("prototype")
+@Namespace("/") 
+@ParentPackage("struts-default")
+@Controller 
+@Scope("prototype")//17:40
 public class WaybillAction extends CommonAction<WayBill> {
 
     public WaybillAction() {
