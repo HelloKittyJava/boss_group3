@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
@@ -16,15 +16,16 @@
 		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
 	<!--
-		#########################################################
+		########################################################
 		指定连接池配置
-		#########################################################
+		########################################################
 	-->
 	<bean id="dataSource"
 		class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass"
 			value="oracle.jdbc.driver.OracleDriver" />
 		<property name="jdbcUrl"
+	
 			value="jdbc:oracle:thin:@192.168.45.200:1521:ORCL" />
 		<property name="user" value=" heima_bos_team03" />
 		<property name="password" value=" heima_bos_team03" />
