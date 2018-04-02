@@ -4,3 +4,5 @@
 target
 .tern-project
 mylog.log
+.iml
+.idea
