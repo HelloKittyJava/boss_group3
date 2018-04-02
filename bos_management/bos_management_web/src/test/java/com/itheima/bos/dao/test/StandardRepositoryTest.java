@@ -2,14 +2,26 @@ package com.itheima.bos.dao.test;
 
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import com.itheima.bos.dao.base.AreaRepository;
+import com.itheima.bos.dao.base.SubAreaRepository;
+import com.itheima.bos.domain.base.Area;
+import com.itheima.bos.domain.base.SubArea;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.itheima.bos.dao.base.StandardRepository;
 import com.itheima.bos.domain.base.Standard;
@@ -25,6 +37,12 @@ public class StandardRepositoryTest {
 
     @Autowired
     private StandardRepository standardRepository;
+
+    @Autowired
+    private SubAreaRepository subAreaRepository;
+
+    @Autowired
+    private AreaRepository areaRepository;
 
     @Test
     public void test1() {
@@ -141,5 +159,25 @@ public class StandardRepositoryTest {
     public void test13() {
         standardRepository.deleteByName("张三");
 
+    }
+
+    @Test
+    public void test14(){
+//        List<Object[]> list = subAreaRepository.xjbcByAreaId();
+        List<Object[]> list = areaRepository.xjbcCharts();
+        ArrayList<Map<String,Object>> arrayList = new ArrayList();
+        for (Object[] objects : list) {
+            HashMap<String, Object> map = new HashMap<>();
+            for (Object o : objects) {
+                if(o instanceof Long){
+                    map.put("data",new Long[]{(Long) o});
+                }else{
+                    map.put("name",(String)o);
+                }
+            }
+            arrayList.add(map);
+        }
+        String json = new Gson().toJson(arrayList);
+        System.out.println(json);
     }
 }

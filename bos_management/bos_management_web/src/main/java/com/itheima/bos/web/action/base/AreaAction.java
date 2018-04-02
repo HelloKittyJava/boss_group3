@@ -288,4 +288,15 @@ public class AreaAction extends CommonAction<Area> {
 
         return NONE;
     }
+
+    @Action("areaAction_doExportChart")
+    public String doExportChart(){
+        List<Map<String,Object>> list = areaService.xjbcCharts();
+        try {
+            list2json(list,new JsonConfig());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return NONE;
+    }
 }
