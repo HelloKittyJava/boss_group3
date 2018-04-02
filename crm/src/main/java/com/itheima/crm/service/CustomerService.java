@@ -71,4 +71,6 @@ public interface CustomerService {
     @GET
     @Path("/findFixedAreaIdByAdddress")
     String findFixedAreaIdByAdddress(@QueryParam("address") String address);
+    
+  
 }

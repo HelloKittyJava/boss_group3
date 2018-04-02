@@ -250,8 +250,8 @@
 
 	});
 
-	function doDblClickRow() {
-		alert("双击表格数据...");
+	function doDblClickRow(rowIndex,rowData) {
+		//alert("双击表格数据...");
 		$('#association_subarea').datagrid({
 			fit : true,
 			border : true,
@@ -328,14 +328,15 @@
 			border : true,
 			rownumbers : true,
 			striped : true,
-			url : "../../data/association_customer.json",
+			//"../../data/association_customer.json"
+			url : "../../customerAction_findByFixedAreaId.action?id="+rowData.id,
 			columns : [ [ {
 				field : 'id',
 				title : '客户编号',
 				width : 120,
 				align : 'center'
 			}, {
-				field : 'name',
+				field : 'username',
 				title : '客户名称',
 				width : 120,
 				align : 'center'
