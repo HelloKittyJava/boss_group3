@@ -25,7 +25,7 @@ public class Promotion {
     private String activeScope; // 活动范围
     private Date startDate; // 促销开始时间
     private Date endDate; // 促销结束时间
-    private String status; // 状态 1：有效 2: 过期
+    private String status; // 状态 1：有效 2: 过期     3:未开始
     private String description; // 内容
 
     public Promotion() {}
