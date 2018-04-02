@@ -24,4 +24,10 @@ public interface AreaRepository extends JpaRepository<Area, Long> {
     @Query("select a.province,count(*) from Area a group by a.province")
     List<Object[]> exportCharts();
 
+
+//    SELECT a.C_PROVINCE,COUNT(*) FROM T_AREA a , T_SUB_AREA s WHERE s.C_AREA_ID = a.C_ID GROUP BY a.C_PROVINCE
+
+    @Query("select a.province,count(a.id) from Area a inner join a.subareas s where a.id = s.area.id group by a.province")
+    List<Object[]> xjbcCharts();
+
 }

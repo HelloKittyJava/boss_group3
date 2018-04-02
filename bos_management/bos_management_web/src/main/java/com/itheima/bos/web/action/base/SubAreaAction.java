@@ -2,6 +2,7 @@ package com.itheima.bos.web.action.base;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -59,7 +60,7 @@ public class SubAreaAction extends CommonAction<SubArea> {
         Page<SubArea> page = subAreaService.findAll(pageable);
 
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[] {"subareas"});
+        jsonConfig.setExcludes(new String[] {"subareas","couriers"});
 
         page2json(page, jsonConfig);
         return NONE;
@@ -87,4 +88,6 @@ public class SubAreaAction extends CommonAction<SubArea> {
         list2json(list, jsonConfig);
         return NONE;
     }
+
+
 }
