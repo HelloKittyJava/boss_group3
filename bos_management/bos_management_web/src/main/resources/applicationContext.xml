@@ -25,7 +25,7 @@
 		<property name="driverClass"
 			value="oracle.jdbc.driver.OracleDriver" />
 		<property name="jdbcUrl"
-			value="jdbc:oracle:thin:@localhost:1521:ORCL" />
+			value="jdbc:oracle:thin:@192.168.85.100:1521:ORCL" />
 		<property name="user" value="heima28" />
 		<property name="password" value="heima28" />
 	</bean>
