@@ -28,9 +28,10 @@
 	-->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:ORCL" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.85.100:1521:ORCL" />
+		<!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:ORCL" /> -->
 		<!-- **********************修改用户名和密码************************ -->
-		<property name="user" value="crm28" />
+		<property name="user" value="crm28"/>
 		<property name="password" value="crm28" />
 	</bean>
 	<!-- spring整合JPA -->
