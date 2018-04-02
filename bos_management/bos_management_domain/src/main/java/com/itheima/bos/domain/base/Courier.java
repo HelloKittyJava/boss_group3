@@ -55,7 +55,7 @@ public class Courier {
     // 只有集合属性会发生懒加载
     // 增加transient 关键字
     // 增加fetch=FetchType.EAGER 属性
-    @ManyToMany(mappedBy = "couriers")
+    @ManyToMany(mappedBy = "couriers", fetch=FetchType.EAGER)
     private Set<FixedArea> fixedAreas = new HashSet<FixedArea>();
 
     public Long getId() {

@@ -348,6 +348,34 @@
 			} ] ]
 		});
 
+		$('#fixedAreaAction_associationCourier').datagrid({
+			fit : true,
+			border : true,
+			rownumbers : true,
+			striped : true,
+			url : "../../fixedAreaAction_associationCourier.action?id="+rowData.id,
+			columns : [ [ {
+				field : 'id',
+				title : '编号',
+				width : 120,
+				align : 'center'
+			}, {
+				field : 'name',
+				title : '姓名',
+				width : 120,
+				align : 'center'
+			}, {
+				field : 'telephone',
+				title : '联系电话',
+				width : 120,
+				align : 'center'
+			},{
+				field : 'type',
+				title : '取件员类型',
+				width : 120,
+				align : 'center'
+			} ] ]
+		});
 	}
 </script>
 <script type="text/javascript">
