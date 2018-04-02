@@ -20,16 +20,11 @@
 		指定连接池配置
 		########################################################
 	-->
-	<bean id="dataSource"
-		class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="driverClass"
-			value="oracle.jdbc.driver.OracleDriver" />
-		<property name="jdbcUrl"
-	
-			value="jdbc:oracle:thin:@192.168.45.200:1521:ORCL" />
-		<property name="user" value=" heima_bos_team03" />
-		<property name="password" value=" heima_bos_team03" />
-			
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.85.100:1521:ORCL" />
+		<property name="user" value="Jiang" />
+		<property name="password" value="123" />
 	</bean>
 	<!-- spring整合JPA -->
 	<bean id="entityManagerFactory"

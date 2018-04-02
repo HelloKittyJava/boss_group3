@@ -63,4 +63,19 @@ public class SubAreaServiceImpl implements SubAreaService {
         return subAreaRepository.findByFixedArea(fixedArea);
     }
 
+    // 导出excel
+    @Override
+    public List<SubArea> findById(String ids) {
+        
+        List<SubArea> list = new ArrayList<>();
+        String[] split = ids.split(",");
+        for (String id : split) {
+            System.out.println("id"+id);
+            SubArea subArea = subAreaRepository.findById(Long.parseLong(id));
+            System.out.println(subArea);
+            list.add(subArea);
+        }
+        return list;
+    }
+
 }

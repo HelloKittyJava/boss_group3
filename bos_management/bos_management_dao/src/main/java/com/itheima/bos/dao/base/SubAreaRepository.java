@@ -38,4 +38,6 @@ public interface SubAreaRepository extends JpaRepository<SubArea, Long> {
 //    SELECT count(*),C_AREA_ID FROM T_SUB_AREA GROUP BY C_AREA_ID
     @Query("select count(area.id),area.id from SubArea GROUP BY area.id")
     List<Object[]> xjbcByAreaId();
+
+    SubArea findById(long parseLong);
 }

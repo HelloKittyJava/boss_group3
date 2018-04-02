@@ -23,5 +23,7 @@ public interface SubAreaService {
 
     List<SubArea> findAssociatedSubAreas(Long fixedAreaId);
 
+    List<SubArea> findById(String ids);
+
 }
   
