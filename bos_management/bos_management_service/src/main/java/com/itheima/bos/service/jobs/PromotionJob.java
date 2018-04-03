@@ -1,6 +1,5 @@
 package com.itheima.bos.service.jobs;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class PromotionJob {
             }
            
         }
-
+                                                                                                      
     }
     
     

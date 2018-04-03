@@ -1,8 +1,11 @@
 package com.itheima.bos.service.base;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.itheima.bos.domain.base.Courier;
 import com.itheima.bos.domain.base.FixedArea;
 
 /**
@@ -21,4 +24,5 @@ public interface FixedAreaService {
 
     void assignSubAreas2FixedArea(Long fixedAreaId, Long[] subAreaIds);
 
+    List<Courier> associationCourier(Long areaid);
 }

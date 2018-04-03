@@ -58,5 +58,6 @@
 			ref: 引用对象,指定真正的消费者是谁
 		-->
 		<jms:listener destination="sms" ref="SMSConsumer" />
+		<jms:listener destination="smail" ref="smailConsumer" />
 	</jms:listener-container>
 </beans>

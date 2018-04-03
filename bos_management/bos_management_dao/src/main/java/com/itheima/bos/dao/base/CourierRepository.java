@@ -24,5 +24,15 @@ public interface CourierRepository extends JpaRepository<Courier, Long>,
     @Query("update Courier set deltag = 1 where id = ?")
     void updateDelTagById(Long id);
 
+    @Modifying
+    @Query("update Courier set deltag = 0 where id = ?")
+    void updateRestoreById(Long id);
+    
     List<Courier> findByDeltagIsNull();
+
+    // 根据ID查询已关联的快递员
+    @Modifying
+    @Query("select c from  Courier c inner join  c.fixedAreas f where   f.id=?")
+    List<Courier> associationCourier(Long areaid);
+    
 }

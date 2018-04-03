@@ -41,6 +41,16 @@
 
 	//导出按钮绑定的事件
 	function doExport() {
+		var result = $("#grid").datagrid('getSelections');
+		if(result.length == 0){
+			window.location.href="../../subareaAction_doExportAll.action"
+		}else{
+			var arr = new Array();
+			for (var i = 0; i < result.length; i++) {
+				arr.push(result[i].id)
+			}
+			window.location.href="../../subareaAction_doExportAll.action?ids="+arr.toString()
+		}
 
 	}
 

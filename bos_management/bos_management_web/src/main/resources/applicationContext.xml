@@ -16,9 +16,7 @@
 		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
 	<!--
-		#########################################################
 		指定连接池配置
-		#########################################################
 	-->
 	<bean id="dataSource"
 		class="com.mchange.v2.c3p0.ComboPooledDataSource">
@@ -28,6 +26,9 @@
 			value="jdbc:oracle:thin:@192.168.45.200:1521:ORCL" />
 		<property name="user" value=" heima_bos_team03" />
 		<property name="password" value=" heima_bos_team03" />
+			value="jdbc:oracle:thin:@192.168.6.100:1521:ORCL" />
+		<property name="user" value="heima28" />
+		<property name="password" value="heima28" />
 
 	</bean>
 	<!-- spring整合JPA -->
