@@ -101,23 +101,23 @@ public class WaybillAction extends CommonAction<WayBill> {
                     continue;
                 }
                 // 读取数据
-                String goodsType = row.getCell(1).getStringCellValue();
-                String sendProNum = row.getCell(2).getStringCellValue();
-                String sendName = row.getCell(3).getStringCellValue();
+                String goodsType = row.getCell(0).getStringCellValue();
+                String sendProNum = row.getCell(1).getStringCellValue();
+                String sendName = row.getCell(2).getStringCellValue();
                 
-                Cell cell04 = row.getCell(4);
+                Cell cell04 = row.getCell(3);
                 cell04.setCellType(Cell.CELL_TYPE_STRING);
                 String sendMobile =  cell04.getStringCellValue();
                 
-                String sendAddress = row.getCell(5).getStringCellValue();
-                String recName = row.getCell(6).getStringCellValue();
+                String sendAddress = row.getCell(4).getStringCellValue();
+                String recName = row.getCell(5).getStringCellValue();
                 
-                Cell cell07 = row.getCell(7);
+                Cell cell07 = row.getCell(6);
                 cell07.setCellType(Cell.CELL_TYPE_STRING);
                 String recMobile = cell07.getStringCellValue();
                 
-                String recCompany = row.getCell(8).getStringCellValue();
-                String recAddress = row.getCell(9).getStringCellValue();
+                String recCompany = row.getCell(7).getStringCellValue();
+                String recAddress = row.getCell(8).getStringCellValue();
                
                 // 封装数据
                 WayBill wayBill = new WayBill();
@@ -177,15 +177,15 @@ public class WaybillAction extends CommonAction<WayBill> {
         HSSFSheet sheet = workbook.createSheet();
         // 创建标题行
         HSSFRow titleRow = sheet.createRow(0);
-        titleRow.createCell(1).setCellValue("托寄物类型");
-        titleRow.createCell(2).setCellValue("快递产品类型");
-        titleRow.createCell(3).setCellValue("发件人姓名");
-        titleRow.createCell(4).setCellValue("发件人电话");
-        titleRow.createCell(5).setCellValue("发件人地址");
-        titleRow.createCell(6).setCellValue("收件人姓名");
-        titleRow.createCell(7).setCellValue("收件人电话");
-        titleRow.createCell(8).setCellValue("收件人公司");
-        titleRow.createCell(9).setCellValue("收件人地址");
+        titleRow.createCell(0).setCellValue("托寄物类型");
+        titleRow.createCell(1).setCellValue("快递产品类型");
+        titleRow.createCell(2).setCellValue("发件人姓名");
+        titleRow.createCell(3).setCellValue("发件人电话");
+        titleRow.createCell(4).setCellValue("发件人地址");
+        titleRow.createCell(5).setCellValue("收件人姓名");
+        titleRow.createCell(6).setCellValue("收件人电话");
+        titleRow.createCell(7).setCellValue("收件人公司");
+        titleRow.createCell(8).setCellValue("收件人地址");
     	
     	
         // 文件名
