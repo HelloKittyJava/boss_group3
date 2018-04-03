@@ -2,19 +2,15 @@ package com.itheima.bos.web.action.base;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -161,6 +157,15 @@ public class CourierAction extends CommonAction<Courier> {
                     location = "/pages/base/courier.html", type = "redirect")})
     public String batchDel() {
         courierService.batchDel(ids);
+        return SUCCESS;
+    }
+    
+ // 批量还原
+    @Action(value = "courierAction_restore",
+            results = {@Result(name = "success",
+                    location = "/pages/base/courier.html", type = "redirect")})
+    public String restore() {
+        courierService.restore(ids);
         return SUCCESS;
     }
 
