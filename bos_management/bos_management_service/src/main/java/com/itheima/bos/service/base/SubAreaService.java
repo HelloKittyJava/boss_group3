@@ -1,6 +1,7 @@
 package com.itheima.bos.service.base;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,8 @@ public interface SubAreaService {
     List<SubArea> findUnAssociatedSubAreas();
 
     List<SubArea> findAssociatedSubAreas(Long fixedAreaId);
+
+    List<SubArea> findById(String ids);
 
 }
   

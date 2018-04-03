@@ -110,15 +110,29 @@ public class CustomerAction extends ActionSupport
                     .accept(MediaType.APPLICATION_JSON).post(model);
             // 生成的验证码
             String activeCode = RandomStringUtils.randomNumeric(32);
-            // 存储验证码
-            redisTemplate.opsForValue().set(model.getTelephone(), activeCode, 1,
-                    TimeUnit.DAYS);
-            String emailBody =
-                    "感谢您注册本网站的帐号，请在24小时之内点击<a href='http://localhost:8280/portal/customerAction_active.action?activeCode="
-                            + activeCode + "&telephone=" + model.getTelephone()
-                            + "'>本链接</a>激活您的帐号";
-            // 发送激活邮件
-            MailUtils.sendMail(model.getEmail(), "激活邮件", emailBody);
+
+            // 将短信验证码存在redis
+            redisTemplate.opsForValue().set(model.getTelephone(), activeCode, 1, TimeUnit.DAYS);
+
+            final String receiver = model.getEmail(); // 收件人邮箱地址.例如 lisi@qq.com
+            final String subject = "激活邮件"; // 收件主题
+            final String emailBody =
+                    " 感谢您在本网站注册的账号,请在24小时内点击<a href='http://localhost:8280/portal/customerAction_active.action?activeCode="
+                             + activeCode + "&telephone=" + model.getTelephone() + "' >本链接</a>激活账号";
+            
+            
+            jmsTemplate.send("smail", new MessageCreator() {      //activeMq发送邮件
+                
+                @Override
+                public Message createMessage(Session session) throws JMSException {
+                    MapMessage  message = session.createMapMessage();
+                    message.setString("receiver", receiver);
+                    message.setString("subject", subject);
+                    message.setString("emailBody", emailBody);
+                    
+                    return message;
+                }
+            });
 
             return SUCCESS;
         }

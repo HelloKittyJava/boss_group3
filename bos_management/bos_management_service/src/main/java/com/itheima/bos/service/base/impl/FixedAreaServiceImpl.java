@@ -1,5 +1,6 @@
 package com.itheima.bos.service.base.impl;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,4 +92,10 @@ public class FixedAreaServiceImpl implements FixedAreaService {
         }
     }
 
+    @Override
+    public List<Courier> associationCourier(Long areaid) {
+          
+        return courierRepository.associationCourier(areaid);
+        
+    }
 }

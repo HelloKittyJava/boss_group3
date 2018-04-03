@@ -41,6 +41,16 @@
 
 	//导出按钮绑定的事件
 	function doExport() {
+		var result = $("#grid").datagrid('getSelections');
+		if(result.length == 0){
+			window.location.href="../../subareaAction_doExportAll.action"
+		}else{
+			var arr = new Array();
+			for (var i = 0; i < result.length; i++) {
+				arr.push(result[i].id)
+			}
+			window.location.href="../../subareaAction_doExportAll.action?ids="+arr.toString()
+		}
 
 	}
 
@@ -48,7 +58,48 @@
 		alert("导入");
 	}
 
-	//工具栏
+    function doExportChart() {
+        $("#chartWindow").window("open")
+
+        $.post("../../areaAction_doExportChart.action", function (result) {
+
+            $('#container').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: '每个省有多少个本公司的分区'
+                },
+                subtitle: {
+                    text: '数据来源: 猜的'
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '个数'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} 个分区</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        borderWidth: 0
+                    }
+                },
+                series: result
+
+            })
+        });
+    }
+
+
+    //工具栏
 	var toolbar = [ {
 		id : 'button-search',
 		text : '查询',
@@ -79,6 +130,11 @@
 		text : '导出',
 		iconCls : 'icon-undo',
 		handler : doExport
+	}, {
+		id : 'button-export',
+		text : '分布图',
+		iconCls : 'icon-undo',
+		handler : doExportChart
 	} ];
 	// 定义列
 	var columns = [ [ {

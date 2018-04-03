@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
+import com.itheima.bos.domain.base.Courier;
 import com.itheima.bos.domain.base.FixedArea;
 import com.itheima.bos.service.base.FixedAreaService;
 import com.itheima.bos.web.action.CommonAction;
@@ -190,8 +191,28 @@ public class FixedAreaAction extends CommonAction<FixedArea> {
         return NONE;
     }
     
-    
-    
+    //查询定区关联的快递员
+    @Action(value = "fixedAreaAction_associationCourier")
+    public String associationCourier() throws IOException {
+        
+        Map< String, Object> map = new HashMap<>();
+         
+        List<Courier> list = fixedAreaService.associationCourier(getModel().getId());
+        
+        map.put("total", list.size());
+        map.put("rows", list);
+        
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[] {"fixedAreas", "subareas", "couriers"});
+        
+        String json = JSONObject.fromObject(map ,jsonConfig).toString();
+                HttpServletResponse response = ServletActionContext.getResponse();
+                response.setContentType("application/json;charset=UTF-8");
+                response.getWriter().write(json);
+        
+                
+        return NONE;
+    }
     
     
    

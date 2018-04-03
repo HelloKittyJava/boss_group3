@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
@@ -16,10 +16,11 @@
 		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
 	<!--
-		#########################################################
+		########################################################
 		指定连接池配置
-		#########################################################
+		########################################################
 	-->
+	
 	<bean id="dataSource"
 		class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass"
@@ -220,6 +221,7 @@
 			<!-- 指定具体的触发器,可以简单理解为具体的一个闹钟 -->
 			<list>
 				<ref bean="emailTrigger" />
+				<ref bean="promotionTrigger" />
 			</list>
 
 		</property>
@@ -240,11 +242,19 @@
 		</jaxrs:outInterceptors>
 	</jaxrs:server>
 
-
-
-
-
-
-
+	<!-- 发布定时任务:检查活动时间 -->
+	<bean id="promotionTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="cronExpression">
+			<value>0 0 0 * * ?</value>
+		</property>
+		<property name="jobDetail" ref="jobDetail2"></property>
+	</bean>
+		
+	<bean id="jobDetail2"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		
+		<property name="targetObject" ref="promotionJob"></property>
+		<property name="targetMethod" value="checkDate"></property>
+	</bean>
 
 </beans>
