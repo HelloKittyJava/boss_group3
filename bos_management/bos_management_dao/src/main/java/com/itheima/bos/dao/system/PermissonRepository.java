@@ -1,6 +1,7 @@
 package com.itheima.bos.dao.system;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,7 +25,10 @@ public interface PermissonRepository extends JpaRepository<Permission, Long> {
     // WHERE<br/>
     // u.C_ID = 227<br/>
 
-    @Query("select p from Permission p inner join p.roles r inner join r.users u where u.id = ?")
+    @Query("select p from Permission p inner join p.roles r inner join r.users u where u.id = ?1")
     List<Permission> findbyUid(Long uid);
 
+
+    @Query("select distinct p from Permission p inner join p.roles r where r.id = ?1")
+    Set<Permission> findByRole(Long id);
 }

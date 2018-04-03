@@ -23,4 +23,5 @@ public interface MenuService {
 
     List<Menu> findbyUser(User user);
 
+    List<Menu> findLevelOneByRoleId(Long roleId);
 }

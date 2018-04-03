@@ -57,4 +57,9 @@ public class MenuServiceImpl implements MenuService {
         }
         return menuRepository.findbyUser(user.getId());
     }
+
+    @Override
+    public List<Menu> findLevelOneByRoleId(Long roleId) {
+        return menuRepository.findLevelOneByRoleId(roleId);
+    }
 }
