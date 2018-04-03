@@ -22,9 +22,9 @@
 	-->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.85.100:1521:ORCL" />
-		<property name="user" value="Jiang" />
-		<property name="password" value="123" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.45.200:1521:ORCL" />
+		<property name="user" value="heima_bos03" />
+		<property name="password" value="heima_bos03" />
 	</bean>
 	<!-- spring整合JPA -->
 	<bean id="entityManagerFactory"
@@ -216,6 +216,7 @@
 			<!-- 指定具体的触发器,可以简单理解为具体的一个闹钟 -->
 			<list>
 				<ref bean="emailTrigger" />
+				<ref bean="promotionTrigger" />
 			</list>
 
 		</property>
@@ -236,11 +237,19 @@
 		</jaxrs:outInterceptors>
 	</jaxrs:server>
 
-
-
-
-
-
-
+	<!-- 发布定时任务:检查活动时间 -->
+	<bean id="promotionTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="cronExpression">
+			<value>0 0 0 * * ?</value>
+		</property>
+		<property name="jobDetail" ref="jobDetail2"></property>
+	</bean>
+		
+	<bean id="jobDetail2"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		
+		<property name="targetObject" ref="promotionJob"></property>
+		<property name="targetMethod" value="checkDate"></property>
+	</bean>
 
 </beans>
