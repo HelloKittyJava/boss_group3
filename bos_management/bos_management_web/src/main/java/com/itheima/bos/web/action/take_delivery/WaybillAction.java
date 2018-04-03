@@ -6,8 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -29,6 +33,7 @@ import com.itheima.bos.domain.base.TakeTime;
 import com.itheima.bos.domain.take_delivery.WayBill;
 import com.itheima.bos.service.take_delivery.WayBillService;
 import com.itheima.bos.web.action.CommonAction;
+import com.itheima.utils.FileDownloadUtils;
 import com.itheima.utils.PinYin4jUtils;
 
 import net.sf.json.JsonConfig;
@@ -156,6 +161,61 @@ public class WaybillAction extends CommonAction<WayBill> {
 	    page2json(page, jsonConfig);
     	
     	return NONE;
+    }
+    
+    /**
+     * 模版下载
+     * @return
+     * @throws IOException 
+     */
+    @Action(value = "waybillAction_downloadTemplete")
+    public String downloadTemplete() throws IOException{
+    	
+    	// 在内存中创建了一个excel文件
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        // 创建sheet
+        HSSFSheet sheet = workbook.createSheet();
+        // 创建标题行
+        HSSFRow titleRow = sheet.createRow(0);
+        titleRow.createCell(1).setCellValue("托寄物类型");
+        titleRow.createCell(2).setCellValue("快递产品类型");
+        titleRow.createCell(3).setCellValue("发件人姓名");
+        titleRow.createCell(4).setCellValue("发件人电话");
+        titleRow.createCell(5).setCellValue("发件人地址");
+        titleRow.createCell(6).setCellValue("收件人姓名");
+        titleRow.createCell(7).setCellValue("收件人电话");
+        titleRow.createCell(8).setCellValue("收件人公司");
+        titleRow.createCell(9).setCellValue("收件人地址");
+    	
+    	
+        // 文件名
+        String filename = "导入运单模版.xls";
+
+        // 一个流两个头
+        HttpServletResponse response = ServletActionContext.getResponse();
+        ServletContext servletContext =
+                ServletActionContext.getServletContext();
+        ServletOutputStream outputStream = response.getOutputStream();
+        HttpServletRequest request = ServletActionContext.getRequest();
+
+        // 获取mimeType
+        // 先获取mimeType再重新编码,避免编码后后缀名丢失,导致获取失败
+        String mimeType = servletContext.getMimeType(filename);
+        // 获取浏览器的类型
+        String userAgent = request.getHeader("User-Agent");
+        // 对文件名重新编码
+        filename =
+                FileDownloadUtils.encodeDownloadFilename(filename, userAgent);
+
+        // 设置信息头
+        response.setContentType(mimeType);
+        response.setHeader("Content-Disposition",
+                "attachment; filename=" + filename);
+
+        // 写出文件
+        workbook.write(outputStream);
+        workbook.close();
+        return NONE;
     }
     
 }
