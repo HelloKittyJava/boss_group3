@@ -19,6 +19,10 @@ public interface WayBillService {
 
     Page<WayBill> findAll(Pageable pageable);
 
+    List<WayBill> findByWayBillNum(WayBill wayBill);
+
+    void add(WayBill model);
+
     
 
 }

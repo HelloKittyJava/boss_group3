@@ -34,4 +34,29 @@ public class WayBillServiceImpl implements WayBillService {
 		waybillRepository.save(list);
 		
 	}
+
+    @Override
+    public List<WayBill> findByWayBillNum(WayBill wayBill) {
+       
+        if (wayBill.getWayBillNum() != null) {
+            return waybillRepository.findByWayBillNum(wayBill.getWayBillNum());
+        }
+        return null;
+    }
+
+    @Override
+    public void add(WayBill model) {
+         
+        if (model.getOrder() != null && model.getOrder().getId() == null) {
+            model.setOrder(null);
+        }
+        String wayBillNum = model.getWayBillNum();
+        List<WayBill> list = waybillRepository.findByWayBillNum(wayBillNum);
+        if (!list.isEmpty()) {
+            WayBill wayBill = list.get(0);
+            model.setId(wayBill.getId());
+        }
+        waybillRepository.save(model);
+        
+    }
 }

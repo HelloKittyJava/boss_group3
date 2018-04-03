@@ -22,9 +22,9 @@
 	-->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.45.200:1521:ORCL" />
-		<property name="user" value="heima_bos03" />
-		<property name="password" value="heima_bos03" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.75.128:1521:ORCL" />
+		<property name="user" value="itheima28" />
+		<property name="password" value="itheima28" />
 	</bean>
 	<!-- spring整合JPA -->
 	<bean id="entityManagerFactory"
@@ -240,7 +240,7 @@
 	<!-- 发布定时任务:检查活动时间 -->
 	<bean id="promotionTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="cronExpression">
-			<value>0 0 0 * * ?</value>
+			<value>0 * * * * ?</value>
 		</property>
 		<property name="jobDetail" ref="jobDetail2"></property>
 	</bean>

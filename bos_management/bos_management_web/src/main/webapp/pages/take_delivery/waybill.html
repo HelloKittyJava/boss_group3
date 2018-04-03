@@ -29,16 +29,29 @@
 						$('#orderForm').submit();
 					}
 				});
+				
+				
 			});
+			
+			function toSearchOne() {
+				var num = $("#wayBillNum").val()
+				$.post("../../waybillAction_findOne.action","wayBillNum="+num,function(data){
+					console.log(data);
+					if (data.length != 0) {
+						$('#orderForm').form('load',data[0]);	
+					}
+				})
+			}
 		</script>
 	</head>
 
 	<body>
 		<div class="datagrid-toolbar">
 			<a id="add" icon="icon-add" href="#" class="easyui-linkbutton" plain="true">新增</a>
-			<a id="save" icon="icon-save" href="#" class="easyui-linkbutton" plain="true">保存</a>
+			<a id="save" icon="icon-save" class="easyui-linkbutton" plain="true">保存</a>
 			<a id="no" icon="icon-no" href="#" class="easyui-linkbutton" plain="true">取消</a>
 		</div>
+		<form action="../../waybillAction_add.action" id="orderForm" method="post">
 		<div style="width:95%;margin:10px auto">
 			<div class="table-top">
 				<table class="table-edit" width="95%">
@@ -53,7 +66,7 @@
 						</td>
 						<td>运单号</td>
 						<td>
-							<input type="text" name="wayBillNum" id="wayBillNum"/>
+							<input type="text" name="wayBillNum" id="wayBillNum" onblur="toSearchOne()"/>
 						</td>
 					</tr>
 					<tr>
@@ -267,6 +280,7 @@
 			</div>
 			<div class="clearfix"></div>		
 		</div>
+		</form>
 	</body>
 
 </html>

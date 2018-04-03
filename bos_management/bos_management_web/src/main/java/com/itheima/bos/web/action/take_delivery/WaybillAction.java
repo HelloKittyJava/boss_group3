@@ -17,6 +17,7 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
@@ -24,13 +25,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
-import com.itheima.bos.domain.base.Area;
-import com.itheima.bos.domain.base.TakeTime;
 import com.itheima.bos.domain.take_delivery.WayBill;
 import com.itheima.bos.service.take_delivery.WayBillService;
 import com.itheima.bos.web.action.CommonAction;
-import com.itheima.utils.PinYin4jUtils;
 
+import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 /**
@@ -157,5 +156,26 @@ public class WaybillAction extends CommonAction<WayBill> {
     	
     	return NONE;
     }
+    
+    @Action("waybillAction_findOne")
+    public String findOne() throws IOException {
+        
+        List<WayBill> list = wayBillService.findByWayBillNum(getModel());            
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[] {"order"});
+        list2json(list, jsonConfig);
+        return NONE;
+    } 
+    
+    @Action(value="waybillAction_add",results={@Result(name = "success",
+            location = "/pages/take_delivery/waybill.html", type = "redirect")})
+    public String add(){
+        
+        wayBillService.add(getModel());
+        return SUCCESS;
+    }
+    
+    
+    
     
 }

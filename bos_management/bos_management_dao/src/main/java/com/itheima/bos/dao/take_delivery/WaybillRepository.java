@@ -1,5 +1,7 @@
 package com.itheima.bos.dao.take_delivery;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.itheima.bos.domain.take_delivery.WayBill;
@@ -10,6 +12,8 @@ import com.itheima.bos.domain.take_delivery.WayBill;
  * Date:     2018年3月25日 上午11:13:24 <br/>       
  */
 public interface WaybillRepository extends JpaRepository<WayBill, Long>{
+
+    List<WayBill> findByWayBillNum(String wayBillNum);
 
 }
   
