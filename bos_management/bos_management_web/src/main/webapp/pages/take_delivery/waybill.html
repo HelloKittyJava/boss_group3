@@ -39,6 +39,11 @@
 					console.log(data);
 					if (data.length != 0) {
 						$('#orderForm').form('load',data[0]);	
+					} else {
+						//window.location.href = "waybill.html";
+						$('#orderForm').form("clear")
+						$("#wayBillNum").val(num)
+						
 					}
 				})
 			}
