@@ -2,7 +2,12 @@ package com.itheima.bos.web.action.system;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
+import com.google.gson.Gson;
+import com.itheima.bos.domain.base.Area;
+import com.itheima.bos.domain.system.Menu;
+import net.sf.json.JSONArray;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -87,4 +92,5 @@ public class RoleAction extends CommonAction<Role> {
         list2json(list, jsonConfig);
         return NONE;
     }
+
 }

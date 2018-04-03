@@ -1,5 +1,6 @@
 package com.itheima.bos.service.system.impl;
 
+import com.itheima.bos.domain.base.Area;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,8 @@ import com.itheima.bos.domain.system.Menu;
 import com.itheima.bos.domain.system.Permission;
 import com.itheima.bos.domain.system.Role;
 import com.itheima.bos.service.system.RoleService;
+
+import java.util.Set;
 
 /**
  * ClassName:RoleServiceImpl <br/>
@@ -39,7 +42,6 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void save(Role role, String menuIds, Long[] permissionIds) {
-        roleRepository.save(role);
 
         if (StringUtils.isNotEmpty(menuIds)) {
             String[] split = menuIds.split(",");
@@ -58,8 +60,10 @@ public class RoleServiceImpl implements RoleService {
 
             }
         }
+        roleRepository.save(role);
 
     }
+
 
     private void method1(Role role, String menuIds, Long[] permissionIds) {
         if (StringUtils.isNotEmpty(menuIds)) {

@@ -303,11 +303,11 @@
 			<artifactId>itext</artifactId>
 			<version>2.1.7</version>
 		</dependency>
- 		<dependency>
+ 		<!--<dependency>
 			<groupId>com.itheima</groupId>
 			<artifactId>itextAsain</artifactId>
 			<version>1.0.0</version>
-		</dependency>
+		</dependency>-->
 
 		<!-- groovy -->
 		<dependency>
