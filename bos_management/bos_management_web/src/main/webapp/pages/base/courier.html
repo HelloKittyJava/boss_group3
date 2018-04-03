@@ -62,7 +62,32 @@
 	}
 
 	function doRestore() {
-		alert("将取派员还原...");
+		//alert("将取派员还原...");
+        var rows = $("#grid").datagrid("getSelections")
+        if (rows.length == 0) {
+            $.messager.alert("提示", "你至少要选择一条数据进行操作", "info")
+        } else {
+            $.messager
+                    .confirm(
+                            '还原对话框',
+                            '您确定要还原这些快递员吗？',
+                            function(r) {
+                                if (r) {
+
+                                    // 创建一个数组
+                                    var arr = new Array();
+                                    for (var i = 0; i < rows.length; i++) {
+                                        // 向数组中插入数据
+                                        arr.push(rows[i].id)
+                                    }
+
+                                    // 如何发送请求
+                                    //form表单, AJAX, window.location.href
+                                    window.location.href = "../../courierAction_restore.action?ids="
+                                            + arr.toString()
+                                }
+                            });
+        }
 	}
 	// 打开搜索窗口
 	function openSearchWindow() {

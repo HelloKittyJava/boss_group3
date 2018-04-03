@@ -41,7 +41,7 @@ public class CourierServiceImpl implements CourierService {
     }
 
     // 批量删除
-    @RequiresPermissions("batchDel")
+    //@RequiresPermissions("batchDel")
     // 在调用方法时,框架就会检查当前用户是否有对应的权限,如果有就放行,没有就抛异常
     @Override
     public void batchDel(String ids) {
@@ -70,4 +70,16 @@ public class CourierServiceImpl implements CourierService {
 
         return courierRepository.findByDeltagIsNull();
     }
+
+	@Override
+	public void restore(String ids) {
+		//判断数据是否为空
+		  if (StringUtils.isNotEmpty(ids)) {
+	            // 切割数据
+	            String[] split = ids.split(",");
+	            for (String id : split) {
+	                courierRepository.updateRestoreById(Long.parseLong(id));
+	            }
+	        }
+	}
 }
