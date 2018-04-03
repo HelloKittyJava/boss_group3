@@ -94,5 +94,14 @@ public class SubArea {
     public void setFixedArea(FixedArea fixedArea) {
         this.fixedArea = fixedArea;
     }
+    @Column(name = "C_POSITION")   
+private String position;
 
+public String getPosition() {
+    return position;
+}
+
+public void setPosition(String position) {
+    this.position = position;
+}
 }

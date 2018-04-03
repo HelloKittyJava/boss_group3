@@ -18,14 +18,13 @@
 		<script type="text/javascript">
 			$(function(){
 				$("#grid").datagrid({
-					
 					toolbar : [
 						{
 							id : 'btn-download',
 							text : '模板下载',
 							iconCls : 'icon-save',
 							handler : function(){
-								location.href = "../../download.action?filename=工作单导入模板.xls";
+								location.href = "../../waybillAction_downloadTemplete.action";
 							}
 						},{
 							id : 'btn-upload',
@@ -93,7 +92,7 @@
 							align : 'center'
 						}
 					]],
-					pageList: [10,20,30],
+					pageList: [30,50,70],
 					pagination : true,
 					striped : true,
 					singleSelect: true,

@@ -136,20 +136,19 @@
 </body>
 <script type="text/javascript">
 	$(function() {
-		$
-				.post(
-						"../../permissionAction_findAll.action",
-						function(data) {
-							for (var i = 0; i < data.length; i++) {
-								var id = data[i].id;
-								var name = data[i].name;
-								$("#permissonTd")
-										.append(
-												'<input id="'+id+'" type="checkbox" name="permissionIds" value="'+id+'" /><label for="'+id+'">'
-														+ name + '</label>')
-							}
-						})
+		findAllPermission()
 	})
+
+	function findAllPermission() {
+        $.post("../../permissionAction_findAll.action",
+            function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    var id = data[i].id;
+                    var name = data[i].name;
+                    $("#permissonTd").append('<input id="'+id+'" type="checkbox" name="permissionIds" value="'+id+'" /><label for="'+id+'">' + name + '</label>')
+                }
+            })
+    }
 </script>
 
 </html>

@@ -34,7 +34,7 @@ public class Menu implements Serializable {
     @Column(name = "C_DESCRIPTION")
     private String description; // 描述
 
-    @ManyToMany(mappedBy = "menus")
+    @ManyToMany(mappedBy = "menus",fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<Role>(0);
     // fetch = FetchType.EAGER : 立刻查询
     @OneToMany(mappedBy = "parentMenu", fetch = FetchType.EAGER)

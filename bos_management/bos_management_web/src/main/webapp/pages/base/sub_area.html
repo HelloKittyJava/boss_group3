@@ -28,7 +28,15 @@
 	}
 
 	function doEdit() {
-		alert("修改...");
+		var result = $("#grid").datagrid("getSelections")
+		if (result.length == 1) {
+			$("#editWindow").window("open")
+			//form表单里面的load方法  result[0]指的是id值 根据id值回显原本的数据
+			$('#editId').combobox('setValue', result[0].area.id)
+			$("#editWindow").form("load", result[0])
+		} else {
+			$.messager.alert("提示", "只能修改一条数据", "info")
+		}
 	}
 
 	function doDelete() {
@@ -42,14 +50,15 @@
 	//导出按钮绑定的事件
 	function doExport() {
 		var result = $("#grid").datagrid('getSelections');
-		if(result.length == 0){
-			window.location.href="../../subareaAction_doExportAll.action"
-		}else{
+		if (result.length == 0) {
+			window.location.href = "../../subareaAction_doExportAll.action"
+		} else {
 			var arr = new Array();
 			for (var i = 0; i < result.length; i++) {
 				arr.push(result[i].id)
 			}
-			window.location.href="../../subareaAction_doExportAll.action?ids="+arr.toString()
+			window.location.href = "../../subareaAction_doExportAll.action?ids="
+					+ arr.toString()
 		}
 
 	}
@@ -58,48 +67,52 @@
 		alert("导入");
 	}
 
-    function doExportChart() {
-        $("#chartWindow").window("open")
+	function doExportChart() {
+		$("#chartWindow").window("open")
 
-        $.post("../../areaAction_doExportChart.action", function (result) {
+		$
+				.post(
+						"../../areaAction_doExportChart.action",
+						function(result) {
 
-            $('#container').highcharts({
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: '每个省有多少个本公司的分区'
-                },
-                subtitle: {
-                    text: '数据来源: 猜的'
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: '个数'
-                    }
-                },
-                tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} 个分区</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
-                },
-                plotOptions: {
-                    column: {
-                        borderWidth: 0
-                    }
-                },
-                series: result
+							$('#container')
+									.highcharts(
+											{
+												chart : {
+													type : 'column'
+												},
+												title : {
+													text : '每个省有多少个本公司的分区'
+												},
+												subtitle : {
+													text : '数据来源: 猜的'
+												},
+												yAxis : {
+													min : 0,
+													title : {
+														text : '个数'
+													}
+												},
+												tooltip : {
+													headerFormat : '<span style="font-size:10px">{point.key}</span><table>',
+													pointFormat : '<tr><td style="color:{series.color};padding:0">{series.name}: </td>'
+															+ '<td style="padding:0"><b>{point.y:.1f} 个分区</b></td></tr>',
+													footerFormat : '</table>',
+													shared : true,
+													useHTML : true
+												},
+												plotOptions : {
+													column : {
+														borderWidth : 0
+													}
+												},
+												series : result
 
-            })
-        });
-    }
+											})
+						});
+	}
 
-
-    //工具栏
+	//工具栏
 	var toolbar = [ {
 		id : 'button-search',
 		text : '查询',
@@ -241,6 +254,17 @@
 			resizable : false
 		});
 
+		//修改分区
+		$('#editWindow').window({
+			title : '修改分区',
+			width : 600,
+			modal : true,
+			shadow : true,
+			closed : true,
+			height : 400,
+			resizable : false
+		});
+
 		$('#chartWindow').window({
 			width : 700,
 			modal : true,
@@ -274,6 +298,12 @@
 			$("#subareaForm").submit()
 		}
 	}
+
+	function saveData() {
+		if ($("#editForm").form("validate")) {
+			$("#editForm").submit()
+		}
+	}
 </script>
 </head>
 
@@ -303,6 +333,73 @@
 					<tr>
 						<td>选择区域</td>
 						<td><input class="easyui-combobox" name="area.id"
+							data-options="valueField:'id',textField:'name',mode:'remote',
+									 url:'../../areaAction_findAll.action'" />
+						</td>
+					</tr>
+					<tr>
+						<td>关键字</td>
+						<td><input type="text" name="keyWords"
+							class="easyui-validatebox" required="true" /></td>
+					</tr>
+					<tr>
+						<td>辅助关键字</td>
+						<td><input type="text" name="assistKeyWords"
+							class="easyui-validatebox" required="true" /></td>
+					</tr>
+					<tr>
+						<td>起始号</td>
+						<td><input type="text" name="startNum"
+							class="easyui-validatebox" required="true" /></td>
+					</tr>
+					<tr>
+						<td>终止号</td>
+						<td><input type="text" name="endNum"
+							class="easyui-validatebox" required="true" /></td>
+					</tr>
+					<tr>
+						<td>单双号</td>
+						<td><select class="easyui-combobox" name="single"
+							style="width: 150px;">
+								<option value="0">单双号</option>
+								<option value="1">单号</option>
+								<option value="2">双号</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td>位置信息</td>
+						<td><input type="text" name="position"
+							class="easyui-validatebox" required="true" style="width: 250px;" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+
+	<!-- 修改分区 -->
+	<div class="easyui-window" title="分区修改" id="editWindow"
+		collapsible="false" minimizable="false" maximizable="false"
+		style="top: 20px; left: 200px">
+		<div style="height: 31px; overflow: hidden;" split="false"
+			border="false">
+			<div class="datagrid-toolbar">
+				<a onclick="saveData()" id="saveData" icon="icon-save" href="#"
+					class="easyui-linkbutton" plain="true">保存</a>
+			</div>
+		</div>
+
+		<div style="overflow: auto; padding: 5px;" border="false">
+			<form id="editForm" method="post"
+				action="../../subareaAction_edit.action">
+				<input type="hidden" name="id">
+				<table class="table-edit" width="80%" align="center">
+					<tr class="title">
+						<td colspan="2">分区信息</td>
+					</tr>
+					<tr>
+						<td>选择区域</td>
+						<td><input id="editId" class="easyui-combobox" name="area.id"
 							data-options="valueField:'id',textField:'name',mode:'remote',
 									 url:'../../areaAction_findAll.action'" />
 						</td>

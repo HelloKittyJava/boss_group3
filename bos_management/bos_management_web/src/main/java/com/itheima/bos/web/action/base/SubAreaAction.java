@@ -206,5 +206,11 @@ public class SubAreaAction extends CommonAction<SubArea> {
         return NONE;
     }
 
+  //修改数据
+    @Action(value="subareaAction_edit",results={@Result(name="success",location="/pages/base/sub_area.html",type="redirect")})
+     public String edit(){
+        subAreaService.save(getModel());
+        return SUCCESS;
+     }
 
 }
