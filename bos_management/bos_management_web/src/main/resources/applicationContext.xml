@@ -221,6 +221,7 @@
 			<!-- 指定具体的触发器,可以简单理解为具体的一个闹钟 -->
 			<list>
 				<ref bean="emailTrigger" />
+				<ref bean="promotionTrigger" />
 			</list>
 
 		</property>
